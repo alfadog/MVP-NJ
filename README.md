@@ -1,13 +1,17 @@
 # Telegram Mini Apps Next.js Template
 
 This template demonstrates how developers can implement a web application on the
-Telegram Mini Apps platform using the following technologies and libraries:
+Telegram Mini Apps platform using the following technologies and libraries. It
+is now configured as the base for a cognitive-training platform where
+**TelegramUI** is the only allowed UI toolkit and the [Telegram Mini Apps Figma
+UI Kit](https://www.figma.com/community/file/1348989725141777736/telegram-mini-apps-ui-kit)
+defines every spacing, typography scale, and component state.
 
 - [Next.js](https://nextjs.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [TON Connect](https://docs.ton.org/develop/dapps/ton-connect/overview)
 - [@telegram-apps SDK](https://docs.telegram-mini-apps.com/packages/telegram-apps-sdk/2-x)
-- [Telegram UI](https://github.com/Telegram-Mini-Apps/TelegramUI)
+- [Telegram UI](https://github.com/Telegram-Mini-Apps/TelegramUI) (exclusive UI framework)
 
 > The template was created using [pnpm](https://pnpm.io/). Therefore, it is
 > required to use it for this project as well. Using other package managers, you
@@ -34,6 +38,8 @@ This project contains the following scripts:
 - `lint`. Runs [eslint](https://eslint.org/) to ensure the code quality meets
   the required
   standards.
+- `format`. Runs [Prettier](https://prettier.io/) with the shared configuration
+  found in `prettier.config.js`.
 
 To run a script, use the `pnpm run` command:
 
@@ -133,6 +139,14 @@ from the creators of Next.js.
 Check out
 the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for
 more details.
+
+## Internal project documentation
+
+All contributors should read `docs/PROJECT_STRUCTURE.md` before making changes.
+It documents the agreed routing plan (`/games`, `/games/[slug]`, `/profile`,
+`/leaderboards`, and `/app/api/*`), where Telegram-specific providers live, and
+how new games must be added under `src/games/<gameName>/` with entries in
+`src/games/config.ts`.
 
 ## Useful Links
 
