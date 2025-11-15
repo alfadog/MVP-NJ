@@ -3,6 +3,7 @@
 import { AppScaffold } from '@/components/AppScaffold';
 import { TabPlaceholder } from '@/components/TabPlaceholder';
 import { Page } from '@/components/Page';
+import { TopBar } from '@/components/TopBar';
 
 export default function StatsPage() {
   return (

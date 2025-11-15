@@ -9,6 +9,7 @@ import { games, type GameDefinition } from '@/games/config';
 import { PatternPeekGame } from '@/games/pattern-peek/PatternPeekGame';
 import type { GameComponentProps } from '@/games/config';
 import { useGameSession } from '@/games/useGameSession';
+import { TopBar } from '@/components/TopBar';
 
 import styles from './GameClient.module.css';
 

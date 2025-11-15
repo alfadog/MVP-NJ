@@ -8,6 +8,7 @@
 .scrollArea {
   flex: 1;
   overflow-y: auto;
+  padding: 0 var(--spacing-page-x) 140px;
 }
 
 .hero {
@@ -165,6 +166,7 @@
   align-items: center;
   border: none;
   text-align: left;
+  padding-right: 28px;
 }
 
 .howToPlayIcon {

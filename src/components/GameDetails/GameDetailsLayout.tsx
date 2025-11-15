@@ -3,6 +3,7 @@
 import { Button } from '@telegram-apps/telegram-ui';
 
 import { GAME_SKILL_LABELS, type GameDefinition } from '@/games/config';
+import { TopBar } from '@/components/TopBar';
 
 import styles from './GameDetailsLayout.module.css';
 
