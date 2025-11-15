@@ -1,0 +1,79 @@
+.wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.bar {
+  background: var(--color-app-background);
+  box-shadow: 0 1px 0 rgba(16, 24, 40, 0.06);
+}
+
+.safe {
+  height: env(safe-area-inset-top);
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding: 0 var(--spacing-page-x);
+  min-height: 64px;
+}
+
+.leading {
+  display: flex;
+  align-items: center;
+}
+
+.leadingButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 16px;
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  font-size: 24px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.leadingPlaceholder,
+.trailingPlaceholder {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+}
+
+.titles {
+  text-align: center;
+}
+
+.titlesStart {
+  text-align: left;
+}
+
+.title {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.subtitle {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
+}
+
+.trailing {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}

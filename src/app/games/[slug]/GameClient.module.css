@@ -2,51 +2,41 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--tg-theme-secondary_bg_color, #f3f5f9);
-}
-
-.playHeader {
-  padding: 20px 16px 12px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.playBackButton {
-  width: 40px;
-  height: 40px;
-  border-radius: 14px;
-  border: none;
-  background: rgba(0, 0, 0, 0.06);
-  font-size: 20px;
-}
-
-.playEyebrow {
-  margin: 0;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: rgba(0, 0, 0, 0.55);
-}
-
-.playTitle {
-  margin: 4px 0 0;
-  font-size: 22px;
+  background: var(--color-app-background);
 }
 
 .playBody {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--spacing-page-x) calc(24px + env(safe-area-inset-bottom));
   overflow-y: auto;
-  padding: 12px 16px 32px;
+}
+
+.playArea {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 24px;
+}
+
+.playStatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
 }
 
 .playFallback {
   margin-top: 24px;
   padding: 24px;
-  border-radius: 24px;
-  background: var(--tg-theme-bg_color, #fff);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow-soft);
   text-align: center;
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
 }
 
 .playFallback button {
@@ -54,7 +44,8 @@
   padding: 10px 18px;
   border-radius: 999px;
   border: none;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--color-surface-muted);
+  font-weight: 600;
 }
 
 .notFound {
@@ -68,9 +59,23 @@
   text-align: center;
 }
 
+.notFound h1 {
+  font-size: var(--type-section-title-size);
+  margin: 0;
+}
+
+.notFound p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-cozy);
+}
+
 .notFound button {
+  margin-top: 16px;
   padding: 12px 24px;
   border-radius: 24px;
   border: none;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow-soft);
+  font-weight: 600;
 }

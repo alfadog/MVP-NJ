@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Button, Card, Section } from '@telegram-apps/telegram-ui';
 
 import type { GameComponentProps } from '../config';
+
+import styles from './PatternPeekGame.module.css';
 
 type Phase = 'idle' | 'showing' | 'recall' | 'finished';
 
@@ -17,6 +18,13 @@ const STATUS_LABELS: Record<Phase, string> = {
   showing: 'Memorize the pattern',
   recall: 'Recreate the pattern',
   finished: 'Round complete',
+};
+
+const INSTRUCTION_TEXT: Record<Phase, string> = {
+  idle: 'Tap Start to reveal a quick flash of tiles, then recreate the pattern from memory.',
+  showing: 'Watch closely. The highlighted tiles will fade after a second.',
+  recall: 'Tap every tile you remember, then press Check pattern to score the round.',
+  finished: 'Solid work. Review your score and run it back to keep improving.',
 };
 
 function generatePattern(): number[] {
@@ -126,9 +134,7 @@ export function PatternPeekGame({ game, session }: GameComponentProps) {
     });
 
     setScore(computedScore);
-    setFeedback(
-      computedScore >= 90 ? 'Perfect recall' : computedScore >= 60 ? 'Good job' : 'Keep practicing',
-    );
+    setFeedback(computedScore >= 90 ? 'Perfect recall' : computedScore >= 60 ? 'Good job' : 'Keep practicing');
     setPhase('finished');
     setPattern([]);
     setSelection(new Set());
@@ -144,100 +150,84 @@ export function PatternPeekGame({ game, session }: GameComponentProps) {
     setRoundStartedAt(null);
   };
 
-  const renderGrid = (currentPhase: Phase) => {
-    if (currentPhase !== 'showing' && currentPhase !== 'recall') {
-      return null;
-    }
+  const renderGrid = () => (
+    <div className={styles.grid} aria-label={`${game.title} grid`}>
+      {Array.from({ length: TOTAL_CELLS }, (_, index) => {
+        const isInPattern = pattern.includes(index);
+        const isSelected = selection.has(index);
+        const cellClasses = [styles.cell];
 
-    return (
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: `repeat(${GRID_SIZE}, 1fr)`,
-          gap: 8,
-          marginTop: 12,
-        }}
-      >
-        {Array.from({ length: TOTAL_CELLS }, (_, index) => {
-          const isInPattern = pattern.includes(index);
-          const isSelected = selection.has(index);
-          const isHighlighted = currentPhase === 'showing' ? isInPattern : isSelected;
+        if (phase === 'showing' && isInPattern) {
+          cellClasses.push(styles.cellShowing);
+        }
 
-          return (
-            <button
-              key={index}
-              type="button"
-              onClick={() => toggleCell(index)}
-              disabled={currentPhase !== 'recall'}
-              style={{
-                height: 56,
-                borderRadius: 10,
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                backgroundColor: isHighlighted ? 'rgba(0, 122, 255, 0.85)' : 'rgba(255, 255, 255, 0.08)',
-                opacity: currentPhase === 'showing' && !isInPattern ? 0.35 : 1,
-                transition: 'background-color 0.2s ease, opacity 0.2s ease',
-              }}
-            />
-          );
-        })}
-      </div>
-    );
-  };
+        if (phase === 'recall' && isSelected) {
+          cellClasses.push(styles.cellSelected);
+        }
+
+        return (
+          <button
+            key={index}
+            type="button"
+            aria-pressed={isSelected}
+            aria-label={`Cell ${index + 1}`}
+            onClick={() => toggleCell(index)}
+            disabled={phase !== 'recall'}
+            className={cellClasses.join(' ')}
+          />
+        );
+      })}
+    </div>
+  );
 
   return (
-    <>
-      <Section header={game.title} footer={game.shortDescription}>
-        <Card type="plain">
-          <Card.Cell subtitle="Status">{STATUS_LABELS[phase]}</Card.Cell>
-          {phase === 'idle' && (
-            <>
-              <Card.Cell subtitle="How to play">
-                Remember the highlighted cells. They disappear quickly, so focus and then recreate the pattern
-                from memory.
-              </Card.Cell>
-              <Card.Cell>
-                <Button size="l" stretched mode="filled" onClick={startRound}>
-                  Start round
-                </Button>
-              </Card.Cell>
-            </>
-          )}
-          {(phase === 'showing' || phase === 'recall') && (
-            <>
-              <Card.Cell subtitle={phase === 'showing' ? 'Memorize the pattern' : 'Recreate the pattern'}>
-                {phase === 'showing'
-                  ? 'Watch the highlighted cells. You will have a moment to memorize them.'
-                  : 'Tap the cells you remember, then choose Check pattern.'}
-              </Card.Cell>
-              <Card.Cell>{renderGrid(phase)}</Card.Cell>
-              {phase === 'recall' && (
-                <Card.Cell>
-                  <Button
-                    size="l"
-                    stretched
-                    mode="filled"
-                    onClick={finishRound}
-                    disabled={selection.size === 0}
-                  >
-                    Check pattern
-                  </Button>
-                </Card.Cell>
-              )}
-            </>
-          )}
-          {phase === 'finished' && (
-            <>
-              <Card.Cell subtitle="Result">Score: {score ?? 0}/100</Card.Cell>
-              <Card.Cell subtitle="Feedback">{feedback}</Card.Cell>
-              <Card.Cell>
-                <Button size="l" stretched mode="filled" onClick={resetRound}>
-                  Play again
-                </Button>
-              </Card.Cell>
-            </>
-          )}
-        </Card>
-      </Section>
-    </>
+    <div className={styles.game}>
+      <div className={styles.statusCard}>
+        <p className={styles.statusLabel}>Status</p>
+        <p className={styles.statusValue}>{STATUS_LABELS[phase]}</p>
+        {score != null && phase === 'finished' ? (
+          <span className={styles.scoreBadge}>Score {score}/100</span>
+        ) : null}
+      </div>
+
+      <p className={styles.instructions}>{INSTRUCTION_TEXT[phase]}</p>
+
+      <div className={styles.gridWrapper}>{renderGrid()}</div>
+
+      <div className={styles.controls}>
+        {phase === 'idle' && (
+          <button type="button" className={styles.primaryButton} onClick={startRound}>
+            Start round
+          </button>
+        )}
+
+        {phase === 'showing' && <p className={styles.helperText}>Memorize the glowing tiles.</p>}
+
+        {phase === 'recall' && (
+          <>
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={finishRound}
+              disabled={selection.size === 0}
+            >
+              Check pattern
+            </button>
+            <button type="button" className={styles.secondaryButton} onClick={resetRound}>
+              Reset selection
+            </button>
+          </>
+        )}
+
+        {phase === 'finished' && (
+          <>
+            {feedback ? <p className={styles.feedback}>{feedback}</p> : null}
+            <button type="button" className={styles.primaryButton} onClick={resetRound}>
+              Play again
+            </button>
+          </>
+        )}
+      </div>
+    </div>
   );
 }
