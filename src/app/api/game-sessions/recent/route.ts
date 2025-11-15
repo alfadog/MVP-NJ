@@ -11,7 +11,17 @@ export async function GET(request: Request) {
   }
 
   try {
-    const sessions = await prisma.gameSession.findMany({
+    const sessions: Array<{
+      id: string;
+      gameId: string;
+      skillType: string;
+      score: number;
+      level: number | null;
+      durationMs: number | null;
+      startedAt: Date;
+      finishedAt: Date;
+      createdAt: Date;
+    }> = await prisma.gameSession.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
       take: 5,

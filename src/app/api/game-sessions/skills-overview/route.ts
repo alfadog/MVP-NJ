@@ -39,7 +39,7 @@ export async function GET(request: Request) {
   }
 
   try {
-    const sessions = await prisma.gameSession.findMany({
+    const sessions: Array<{ skillType: string; score: number }> = await prisma.gameSession.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
       take: limit,
@@ -63,6 +63,7 @@ export async function GET(request: Request) {
         entry.totalScore += session.score;
         entry.sessionsCount += 1;
         entry.bestScore = Math.max(entry.bestScore, session.score);
+        entry.lastScore = session.score;
       } else {
         aggregates.set(session.skillType, {
           skillType: session.skillType,
