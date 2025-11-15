@@ -1,5 +1,11 @@
+'use client';
+
 import type { PropsWithChildren } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
+import { initDataState as initDataStateSignal, useSignal } from '@telegram-apps/sdk-react';
+
+import { SettingsSheet } from '@/components/SettingsSheet';
 
 import styles from './AppScaffold.module.css';
 
@@ -18,8 +24,21 @@ interface AppScaffoldProps extends PropsWithChildren {
 }
 
 export function AppScaffold({ activeTab, children }: AppScaffoldProps) {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const initDataState = useSignal(initDataStateSignal);
+  const user = initDataState?.user;
+
   return (
     <div className={styles.scaffold}>
+      <button
+        type="button"
+        className={styles.settingsButton}
+        onClick={() => setIsSettingsOpen(true)}
+        aria-label="Open settings"
+        aria-expanded={isSettingsOpen}
+      >
+        <span aria-hidden>⚙️</span>
+      </button>
       <main className={styles.content}>{children}</main>
       <nav className={styles.tabBar} aria-label="Primary navigation">
         {TAB_CONFIG.map((tab) => (
@@ -36,6 +55,7 @@ export function AppScaffold({ activeTab, children }: AppScaffoldProps) {
           </Link>
         ))}
       </nav>
+      <SettingsSheet open={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} user={user} />
     </div>
   );
 }

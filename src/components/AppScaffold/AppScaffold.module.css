@@ -12,6 +12,30 @@
   padding-bottom: calc(140px + env(safe-area-inset-bottom));
 }
 
+.settingsButton {
+  position: fixed;
+  top: calc(12px + env(safe-area-inset-top));
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.15);
+  z-index: 24;
+  cursor: pointer;
+}
+
+.settingsButton:focus-visible {
+  outline: 2px solid rgba(75, 107, 251, 0.6);
+  outline-offset: 2px;
+}
+
 .tabBar {
   position: sticky;
   bottom: 0;

@@ -9,7 +9,6 @@ export default function StatsPage() {
   return (
     <Page back={false}>
       <AppScaffold activeTab="stats">
-        <TopBar title="Stats" />
         <div className="page-shell">
           <TabPlaceholder
             title="My stats"

@@ -9,7 +9,8 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 0 var(--spacing-page-x) calc(24px + env(safe-area-inset-bottom));
+  padding: calc(var(--spacing-page-top) + env(safe-area-inset-top)) var(--spacing-page-x)
+    calc(24px + env(safe-area-inset-bottom));
   overflow-y: auto;
 }
 
@@ -17,17 +18,6 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: 24px;
-}
-
-.playStatus {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--color-text-tertiary);
 }
 
 .playFallback {

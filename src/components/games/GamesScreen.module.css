@@ -18,6 +18,7 @@
   font-size: var(--type-app-title-size);
   font-weight: var(--type-app-title-weight);
   line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
 }
 
 .subtitle {
@@ -71,6 +72,7 @@
   margin: 0;
   font-size: var(--type-section-title-size);
   font-weight: var(--type-section-title-weight);
+  color: var(--color-text-primary);
 }
 
 .sectionHeader p {

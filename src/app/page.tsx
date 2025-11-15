@@ -9,7 +9,6 @@ export default function TodayPage() {
   return (
     <Page back={false}>
       <AppScaffold activeTab="today">
-        <TopBar title="Today" />
         <div className="page-shell">
           <TabPlaceholder
             title="Daily workout"

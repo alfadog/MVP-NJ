@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { GameHud } from '@/components/GameHud';
+
 import type { GameComponentProps } from '../config';
 
 import styles from './PatternPeekGame.module.css';
@@ -41,13 +43,16 @@ function generatePattern(): number[] {
   return pattern;
 }
 
-export function PatternPeekGame({ game, session }: GameComponentProps) {
+export function PatternPeekGame({ game, session, onExit }: GameComponentProps) {
   const [phase, setPhase] = useState<Phase>('idle');
   const [pattern, setPattern] = useState<number[]>([]);
   const [selection, setSelection] = useState<Set<number>>(new Set());
   const [score, setScore] = useState<number | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [roundStartedAt, setRoundStartedAt] = useState<number | null>(null);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showHowTo, setShowHowTo] = useState(false);
   const revealTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -57,6 +62,20 @@ export function PatternPeekGame({ game, session }: GameComponentProps) {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (phase === 'showing' || phase === 'recall') {
+      const interval = setInterval(() => {
+        if (roundStartedAt != null) {
+          setElapsedMs(Date.now() - roundStartedAt);
+        }
+      }, 150);
+
+      return () => clearInterval(interval);
+    }
+
+    setElapsedMs(0);
+  }, [phase, roundStartedAt]);
 
   const startRound = () => {
     if (phase === 'showing' || phase === 'recall') {
@@ -70,6 +89,9 @@ export function PatternPeekGame({ game, session }: GameComponentProps) {
     setFeedback(null);
     setPhase('showing');
     setRoundStartedAt(Date.now());
+    setElapsedMs(0);
+    setIsMenuOpen(false);
+    setShowHowTo(false);
     session.startGame();
 
     if (revealTimeoutRef.current) {
@@ -139,6 +161,7 @@ export function PatternPeekGame({ game, session }: GameComponentProps) {
     setPattern([]);
     setSelection(new Set());
     setRoundStartedAt(null);
+    setElapsedMs(0);
   };
 
   const resetRound = () => {
@@ -148,6 +171,9 @@ export function PatternPeekGame({ game, session }: GameComponentProps) {
     setScore(null);
     setFeedback(null);
     setRoundStartedAt(null);
+    setElapsedMs(0);
+    setIsMenuOpen(false);
+    setShowHowTo(false);
   };
 
   const renderGrid = () => (
@@ -180,54 +206,101 @@ export function PatternPeekGame({ game, session }: GameComponentProps) {
     </div>
   );
 
+  const formattedTimer =
+    (phase === 'showing' || phase === 'recall') && roundStartedAt != null
+      ? `${(elapsedMs / 1000).toFixed(1)}s`
+      : '0.0s';
+  const scoreLabel = score != null ? `${score}` : '--';
+
+  const openMenu = () => {
+    setIsMenuOpen(true);
+    setShowHowTo(false);
+  };
+
+  const handleExit = () => {
+    setIsMenuOpen(false);
+    onExit();
+  };
+
+  const handleRestart = () => {
+    resetRound();
+    setIsMenuOpen(false);
+  };
+
   return (
     <div className={styles.game}>
-      <div className={styles.statusCard}>
-        <p className={styles.statusLabel}>Status</p>
-        <p className={styles.statusValue}>{STATUS_LABELS[phase]}</p>
-        {score != null && phase === 'finished' ? (
-          <span className={styles.scoreBadge}>Score {score}/100</span>
-        ) : null}
+      <GameHud levelLabel="1" timerLabel={formattedTimer} scoreLabel={scoreLabel} onMenuClick={openMenu} />
+
+      <div className={styles.stage}>
+        <span className={styles.statusPill}>{STATUS_LABELS[phase]}</span>
+        <div className={styles.gridWrapper}>{renderGrid()}</div>
       </div>
-
-      <p className={styles.instructions}>{INSTRUCTION_TEXT[phase]}</p>
-
-      <div className={styles.gridWrapper}>{renderGrid()}</div>
 
       <div className={styles.controls}>
-        {phase === 'idle' && (
-          <button type="button" className={styles.primaryButton} onClick={startRound}>
-            Start round
-          </button>
-        )}
-
-        {phase === 'showing' && <p className={styles.helperText}>Memorize the glowing tiles.</p>}
-
-        {phase === 'recall' && (
-          <>
-            <button
-              type="button"
-              className={styles.primaryButton}
-              onClick={finishRound}
-              disabled={selection.size === 0}
-            >
-              Check pattern
+        <p className={styles.instructions}>{INSTRUCTION_TEXT[phase]}</p>
+        <div className={styles.buttonStack}>
+          {phase === 'idle' && (
+            <button type="button" className={styles.primaryButton} onClick={startRound}>
+              Start round
             </button>
-            <button type="button" className={styles.secondaryButton} onClick={resetRound}>
-              Reset selection
-            </button>
-          </>
-        )}
+          )}
 
-        {phase === 'finished' && (
-          <>
-            {feedback ? <p className={styles.feedback}>{feedback}</p> : null}
-            <button type="button" className={styles.primaryButton} onClick={resetRound}>
-              Play again
-            </button>
-          </>
-        )}
+          {phase === 'showing' && <p className={styles.helperText}>Memorize the glowing tiles.</p>}
+
+          {phase === 'recall' && (
+            <>
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={finishRound}
+                disabled={selection.size === 0}
+              >
+                Check pattern
+              </button>
+              <button type="button" className={styles.secondaryButton} onClick={resetRound}>
+                Reset selection
+              </button>
+            </>
+          )}
+
+          {phase === 'finished' && (
+            <>
+              {feedback ? <p className={styles.feedback}>{feedback}</p> : null}
+              <button type="button" className={styles.primaryButton} onClick={resetRound}>
+                Play again
+              </button>
+            </>
+          )}
+        </div>
       </div>
+
+      {isMenuOpen ? (
+        <div className={styles.menuOverlay} role="dialog" aria-modal>
+          <div className={styles.menuCard}>
+            <div className={styles.menuHeader}>
+              <h3>Paused</h3>
+              <button type="button" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
+                ×
+              </button>
+            </div>
+            <div className={styles.menuActions}>
+              <button type="button" onClick={() => setIsMenuOpen(false)}>
+                Resume
+              </button>
+              <button type="button" onClick={handleRestart}>
+                Restart round
+              </button>
+              <button type="button" onClick={() => setShowHowTo((prev) => !prev)}>
+                How to play
+              </button>
+              <button type="button" className={styles.exitButton} onClick={handleExit}>
+                Exit to overview
+              </button>
+            </div>
+            {showHowTo ? <p className={styles.menuDescription}>{game.howToPlay}</p> : null}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

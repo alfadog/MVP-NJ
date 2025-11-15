@@ -9,7 +9,6 @@ export default function InsightsPage() {
   return (
     <Page back={false}>
       <AppScaffold activeTab="insights">
-        <TopBar title="Insights" />
         <div className="page-shell">
           <TabPlaceholder
             title="Insights"

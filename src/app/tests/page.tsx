@@ -9,7 +9,6 @@ export default function TestsPage() {
   return (
     <Page back={false}>
       <AppScaffold activeTab="tests">
-        <TopBar title="Tests" />
         <div className="page-shell">
           <TabPlaceholder
             title="Assessments"

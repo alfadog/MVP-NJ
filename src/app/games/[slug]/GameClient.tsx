@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { GameDetailsLayout } from '@/components/GameDetails';
 import { Page } from '@/components/Page';
-import { GAME_SKILL_LABELS, games, type GameDefinition } from '@/games/config';
+import { games, type GameDefinition } from '@/games/config';
 import { PatternPeekGame } from '@/games/pattern-peek/PatternPeekGame';
 import type { GameComponentProps } from '@/games/config';
 import { useGameSession } from '@/games/useGameSession';
@@ -66,17 +66,10 @@ function GamePlaySurface({ game, onExit }: { game: GameDefinition; onExit: () =>
 
   return (
     <div className={styles.playSurface}>
-      <TopBar
-        title={game.title}
-        subtitle={GAME_SKILL_LABELS[game.skillType]}
-        onBack={onExit}
-        alignTitle="start"
-        rightSlot={<span className={styles.playStatus}>Level 1</span>}
-      />
       <div className={styles.playBody}>
         <div className={styles.playArea}>
           {GameComponent ? (
-            <GameComponent game={game} session={sessionApi} />
+            <GameComponent game={game} session={sessionApi} onExit={onExit} />
           ) : (
             <div className={styles.playFallback}>
               <p>Gameplay prototype coming soon.</p>
