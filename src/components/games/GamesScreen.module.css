@@ -1,0 +1,81 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.resources {
+  display: flex;
+  gap: 12px;
+}
+
+.resourceChip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.resourceIcon {
+  font-size: 18px;
+}
+
+.resourceChip p {
+  margin: 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.resourceChip strong {
+  display: block;
+  font-size: 15px;
+  color: var(--tg-theme-text_color, #111);
+}
+
+.pageTitle {
+  margin: 0;
+  font-size: 32px;
+}
+
+.pageSubtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.sectionHeader p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.slider {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scroll-snap-type: x proximity;
+}
+
+.slider > a {
+  scroll-snap-align: start;
+}

@@ -1,0 +1,46 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 160px);
+}
+
+.card {
+  width: 100%;
+  max-width: 360px;
+  background: var(--tg-theme-bg_color, #fff);
+  border-radius: 24px;
+  padding: 32px 28px;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 24px;
+  margin: 0 0 12px;
+  color: var(--tg-theme-text_color, #111);
+}
+
+.description {
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.5;
+}
+
+.action {
+  display: inline-flex;
+  margin-top: 18px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.65);
+}

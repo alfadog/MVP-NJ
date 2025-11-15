@@ -1,0 +1,34 @@
+.card {
+  flex: 0 0 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background: var(--tg-theme-bg_color, #fff);
+  border-radius: 22px;
+  text-decoration: none;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  color: var(--tg-theme-text_color, #111);
+}
+
+.art {
+  width: 60px;
+  height: 60px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: #111;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.skillTag {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
