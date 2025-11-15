@@ -1,6 +1,13 @@
 'use client';
 
-import { Section, Cell, Image, List } from '@telegram-apps/telegram-ui';
+import {
+  Button,
+  Card,
+  Section,
+  Cell,
+  Image,
+  List,
+} from '@telegram-apps/telegram-ui';
 import { useTranslations } from 'next-intl';
 
 import { Link } from '@/components/Link/Link';
@@ -15,6 +22,28 @@ export default function Home() {
   return (
     <Page back={false}>
       <List>
+        <Section
+          header="Cognitive training"
+          footer="Daily sessions blend memory, speed, attention, flexibility, and logic drills"
+        >
+          <Card type="plain">
+            <Card.Cell subtitle="Sharpen your brain with short sessions that stay native to Telegram.">
+              Guided exercises in one tap
+            </Card.Cell>
+            <Card.Cell>
+              <Link href="/games" style={{ display: 'block' }}>
+                <Button size="l" mode="filled" stretched>
+                  Go to training
+                </Button>
+              </Link>
+            </Card.Cell>
+          </Card>
+        </Section>
+        <Section header="Account" footer="Review your progress and skills">
+          <Link href="/profile">
+            <Cell subtitle="Skills overview and Telegram identity">Profile</Cell>
+          </Link>
+        </Section>
         <Section
           header="Features"
           footer="You can use these pages to learn more about features, provided by Telegram Mini Apps and other useful projects"
@@ -56,6 +85,21 @@ export default function Home() {
         </Section>
         <Section header={t('header')} footer={t('footer')}>
           <LocaleSwitcher />
+        </Section>
+        <Section
+          header="TelegramUI preview"
+          footer="All surfaces, spacing, and typography mirror the Telegram Mini Apps UI Kit"
+        >
+          <Card type="ambient">
+            <Card.Cell subtitle="Design tokens are inherited from the Telegram runtime">
+              Native look & feel
+            </Card.Cell>
+            <Card.Cell subtitle="Buttons use TelegramUI modes, typography, and spacing">
+              <Button size="m" mode="filled" stretched>
+                Primary action
+              </Button>
+            </Card.Cell>
+          </Card>
         </Section>
       </List>
     </Page>
