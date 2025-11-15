@@ -244,7 +244,7 @@ export default function ProfilePage() {
             <Card.Cell
               before={
                 <Avatar
-                  size={56}
+                  size={48}
                   src={user?.photo_url}
                   acronym={getInitials(displayName)}
                   fallbackIcon="👤"
