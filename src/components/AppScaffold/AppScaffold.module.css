@@ -2,13 +2,38 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--tg-theme-secondary_bg_color, #f3f5f9);
+  background: var(--color-app-background);
 }
 
 .content {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 16px 120px;
+  background: var(--color-app-background);
+  padding-bottom: calc(140px + env(safe-area-inset-bottom));
+}
+
+.settingsButton {
+  position: fixed;
+  top: calc(12px + env(safe-area-inset-top));
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.15);
+  z-index: 24;
+  cursor: pointer;
+}
+
+.settingsButton:focus-visible {
+  outline: 2px solid rgba(75, 107, 251, 0.6);
+  outline-offset: 2px;
 }
 
 .tabBar {
@@ -16,11 +41,13 @@
   bottom: 0;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  background: var(--tg-theme-bg_color, #ffffff);
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
-  gap: 4px;
-  z-index: 10;
+  gap: 8px;
+  padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(16, 24, 40, 0.08);
+  box-shadow: 0 -8px 20px rgba(15, 23, 42, 0.05);
+  z-index: 12;
 }
 
 .tabLink {
@@ -28,23 +55,25 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px 4px;
-  font-size: 12px;
-  border-radius: 12px;
-  color: rgba(0, 0, 0, 0.5);
+  gap: 4px;
+  min-height: 52px;
+  border-radius: 16px;
   text-decoration: none;
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(16, 24, 40, 0.6);
   transition: background 0.2s ease, color 0.2s ease;
 }
 
 .tabLinkActive {
-  background: rgba(0, 0, 0, 0.04);
-  color: var(--tg-theme-text_color, #111);
+  background: rgba(75, 107, 251, 0.12);
+  color: var(--color-text-primary);
   font-weight: 600;
 }
 
 .tabIcon {
-  font-size: 18px;
-  margin-bottom: 4px;
+  font-size: 22px;
+  line-height: 1;
 }
 
 .tabLabel {

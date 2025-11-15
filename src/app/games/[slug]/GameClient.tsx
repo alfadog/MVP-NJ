@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { GameDetailsLayout } from '@/components/GameDetails';
 import { Page } from '@/components/Page';
-import { GAME_SKILL_LABELS, games, type GameDefinition } from '@/games/config';
+import { games, type GameDefinition } from '@/games/config';
 import { PatternPeekGame } from '@/games/pattern-peek/PatternPeekGame';
 import type { GameComponentProps } from '@/games/config';
 import { useGameSession } from '@/games/useGameSession';
@@ -65,31 +65,19 @@ function GamePlaySurface({ game, onExit }: { game: GameDefinition; onExit: () =>
 
   return (
     <div className={styles.playSurface}>
-      <header className={styles.playHeader}>
-        <button
-          type="button"
-          className={styles.playBackButton}
-          onClick={onExit}
-          aria-label="Back to details"
-        >
-          ←
-        </button>
-        <div>
-          <p className={styles.playEyebrow}>{GAME_SKILL_LABELS[game.skillType]}</p>
-          <h1 className={styles.playTitle}>{game.title}</h1>
-        </div>
-      </header>
       <div className={styles.playBody}>
-        {GameComponent ? (
-          <GameComponent game={game} session={sessionApi} />
-        ) : (
-          <div className={styles.playFallback}>
-            <p>Gameplay prototype coming soon.</p>
-            <button type="button" onClick={onExit}>
-              Back to overview
-            </button>
-          </div>
-        )}
+        <div className={styles.playArea}>
+          {GameComponent ? (
+            <GameComponent game={game} session={sessionApi} onExit={onExit} />
+          ) : (
+            <div className={styles.playFallback}>
+              <p>Gameplay prototype coming soon.</p>
+              <button type="button" onClick={onExit}>
+                Back to overview
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

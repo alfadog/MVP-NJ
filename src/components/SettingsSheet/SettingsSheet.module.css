@@ -1,0 +1,252 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background: rgba(15, 23, 42, 0.35);
+  z-index: 40;
+  padding: 0 16px;
+}
+
+.sheet {
+  width: 100%;
+  max-width: 520px;
+  max-height: calc(80vh + env(safe-area-inset-bottom));
+  background: var(--color-app-background);
+  border-radius: 32px 32px 0 0;
+  box-shadow: 0 -20px 50px rgba(15, 23, 42, 0.25);
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 28px 12px;
+}
+
+.titleEyebrow {
+  margin: 0;
+  font-size: var(--type-tag-size);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.title {
+  margin: 4px 0 0;
+  font-size: var(--type-section-title-size);
+  font-weight: var(--type-section-title-weight);
+}
+
+.closeButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: none;
+  background: var(--color-surface);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.15);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.sheetBody {
+  padding: 0 24px 32px;
+  overflow-y: auto;
+  max-height: calc(80vh - 64px);
+}
+
+.section {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.row,
+.rowButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border-radius: 22px;
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow-soft);
+}
+
+.row {
+  border: 1px solid var(--color-border-soft);
+}
+
+.rowButton {
+  border: none;
+  cursor: pointer;
+}
+
+.rowLabel {
+  display: block;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.rowDescription {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-secondary);
+  font-size: var(--type-body-size);
+}
+
+.rowValue {
+  display: block;
+  margin-top: 6px;
+  font-size: var(--type-body-size);
+  color: var(--color-text-secondary);
+}
+
+.timeValue {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.chevron {
+  font-size: 22px;
+  color: var(--color-text-tertiary);
+}
+
+.updateButton {
+  border: none;
+  background: transparent;
+  color: #f97316;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.switch {
+  width: 56px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: rgba(16, 24, 40, 0.15);
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.switchOn {
+  background: #4b6bfb;
+}
+
+.switchThumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+  transform: translateX(0);
+  transition: transform 0.2s ease;
+}
+
+.switchOn .switchThumb {
+  transform: translateX(24px);
+}
+
+.rowDisabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fieldRow {
+  align-items: flex-start;
+}
+
+.wheelPicker {
+  margin-top: 16px;
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow-soft);
+}
+
+.wheelLabel {
+  margin: 0 0 12px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.wheelColumns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.wheelColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wheelColumnLabel {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.wheelScroller {
+  max-height: 150px;
+  overflow-y: auto;
+  border-radius: 18px;
+  border: 1px solid var(--color-border-soft);
+  padding: 6px;
+}
+
+.wheelOption {
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 14px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.wheelOptionActive {
+  background: rgba(75, 107, 251, 0.12);
+  color: var(--color-text-primary);
+}
+
+@media (min-width: 768px) {
+  .backdrop {
+    align-items: center;
+  }
+
+  .sheet {
+    border-radius: 32px;
+    max-height: 720px;
+  }
+}

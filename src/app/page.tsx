@@ -8,12 +8,14 @@ export default function TodayPage() {
   return (
     <Page back={false}>
       <AppScaffold activeTab="today">
-        <TabPlaceholder
-          title="Daily workout"
-          description="Your personalized warmup rotates Memory, Speed, and Attention each day. Come back soon to unlock the full workout flow."
-          eyebrow="Hi, Trainer"
-          actionLabel="Next set unlocks today at 09:00"
-        />
+        <div className="page-shell">
+          <TabPlaceholder
+            title="Daily workout"
+            description="Your personalized warmup rotates Memory, Speed, and Attention each day. Come back soon to unlock the full workout flow."
+            eyebrow="Hi, Trainer"
+            actionLabel="Next set unlocks today at 09:00"
+          />
+        </div>
       </AppScaffold>
     </Page>
   );

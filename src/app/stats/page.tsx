@@ -8,11 +8,13 @@ export default function StatsPage() {
   return (
     <Page back={false}>
       <AppScaffold activeTab="stats">
-        <TabPlaceholder
-          title="My stats"
-          description="Track LPI trends, streaks, and per-skill history once data collection is enabled."
-          actionLabel="Syncing soon"
-        />
+        <div className="page-shell">
+          <TabPlaceholder
+            title="My stats"
+            description="Track LPI trends, streaks, and per-skill history once data collection is enabled."
+            actionLabel="Syncing soon"
+          />
+        </div>
       </AppScaffold>
     </Page>
   );

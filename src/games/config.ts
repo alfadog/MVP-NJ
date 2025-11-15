@@ -21,6 +21,7 @@ export interface GameComponentProps {
       meta?: any;
     }) => void;
   };
+  onExit: () => void;
 }
 
 export interface GameHighScoreStat {

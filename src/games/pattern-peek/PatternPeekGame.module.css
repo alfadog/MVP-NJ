@@ -1,0 +1,182 @@
+.game {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 10px 0;
+}
+
+.statusPill {
+  display: inline-flex;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  box-shadow: var(--color-shadow-soft);
+  font-size: var(--type-body-size);
+  font-weight: 600;
+}
+
+.gridWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.grid {
+  width: min(360px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.cell {
+  aspect-ratio: 1 / 1;
+  border-radius: 24px;
+  border: 1px solid var(--color-border-soft);
+  background: rgba(255, 255, 255, 0.7);
+  transition: background 0.2s ease, transform 0.2s ease;
+  touch-action: manipulation;
+}
+
+.cell:disabled {
+  cursor: default;
+}
+
+.cellShowing {
+  background: rgba(75, 107, 251, 0.85);
+  transform: translateY(-2px);
+}
+
+.cellSelected {
+  background: rgba(75, 107, 251, 0.95);
+  border-color: rgba(75, 107, 251, 0.95);
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.instructions {
+  margin: 0;
+  font-size: var(--type-body-size);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-cozy);
+}
+
+.buttonStack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.helperText {
+  margin: 0;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.primaryButton,
+.secondaryButton {
+  height: 54px;
+  border-radius: 18px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.primaryButton {
+  background: var(--color-text-primary);
+  color: #fff;
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+}
+
+.secondaryButton {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-soft);
+}
+
+.feedback {
+  margin: 0;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+.menuOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+}
+
+.menuCard {
+  width: 100%;
+  max-width: 360px;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  padding: 24px;
+  box-shadow: 0 30px 60px rgba(15, 23, 42, 0.35);
+}
+
+.menuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.menuHeader h3 {
+  margin: 0;
+}
+
+.menuHeader button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-surface-muted);
+  font-size: 20px;
+}
+
+.menuActions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menuActions button {
+  height: 48px;
+  border-radius: 16px;
+  border: none;
+  background: var(--color-app-background);
+  font-weight: 600;
+}
+
+.exitButton {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #b91c1c;
+}
+
+.menuDescription {
+  margin: 18px 0 0;
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-cozy);
+}

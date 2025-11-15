@@ -1,27 +1,47 @@
 .screen {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
+  padding: var(--spacing-page-top) var(--spacing-page-x) 80px;
 }
 
-.header {
+.hero {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.appTitle {
+  margin: 0;
+  font-size: var(--type-app-title-size);
+  font-weight: var(--type-app-title-weight);
+  line-height: var(--line-height-tight);
+  color: var(--color-text-primary);
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  font-size: var(--type-body-size);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-cozy);
 }
 
 .resources {
   display: flex;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .resourceChip {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.04);
+  background: var(--color-surface);
+  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
 }
 
 .resourceIcon {
@@ -32,48 +52,43 @@
   margin: 0;
   font-size: 12px;
   text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.55);
+  letter-spacing: 0.08em;
+  color: var(--color-text-tertiary);
 }
 
 .resourceChip strong {
   display: block;
   font-size: 15px;
-  color: var(--tg-theme-text_color, #111);
-}
-
-.pageTitle {
-  margin: 0;
-  font-size: 32px;
-}
-
-.pageSubtitle {
-  margin: 0;
-  color: rgba(0, 0, 0, 0.55);
+  color: var(--color-text-primary);
 }
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
 .sectionHeader h2 {
   margin: 0;
-  font-size: 20px;
+  font-size: var(--type-section-title-size);
+  font-weight: var(--type-section-title-weight);
+  color: var(--color-text-primary);
 }
 
 .sectionHeader p {
-  margin: 4px 0 0;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.55);
+  margin: 6px 0 0;
+  font-size: var(--type-body-size);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-cozy);
 }
 
 .slider {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 8px;
   scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--spacing-page-x);
 }
 
 .slider > a {

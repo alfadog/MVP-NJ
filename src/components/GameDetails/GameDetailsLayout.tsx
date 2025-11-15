@@ -15,42 +15,29 @@ interface GameDetailsLayoutProps {
 }
 
 export function GameDetailsLayout({ game, onBack, onPlay, onZenMode, onHowToPlay }: GameDetailsLayoutProps) {
+  const skillLabel = GAME_SKILL_LABELS[game.skillType];
+
   return (
     <div className={styles.wrapper}>
-      <div className={styles.body}>
-        <div className={styles.hero} style={{ background: game.heroBackground }}>
-          <button
-            type="button"
-            className={styles.backButton}
-            onClick={onBack}
-            aria-label="Back to games"
-          >
+      <div className={styles.scrollArea}>
+        <section className={styles.hero} style={{ background: game.heroBackground }}>
+          <button type="button" className={styles.backButton} onClick={onBack} aria-label="Back to games">
             ←
           </button>
-          <div className={styles.heroTopRow}>
-            <div className={styles.heroResources}>
-              <HeroChip icon="🔥" label="Flame" value="0" />
-              <HeroChip icon="⚡️" label="Energy" value="1167" />
-            </div>
+          <div className={styles.heroIcon} style={{ borderColor: game.accentColor }}>
+            {game.icon}
           </div>
-          <div className={styles.heroContent}>
-            <div className={styles.heroIcon} style={{ borderColor: game.accentColor }}>
-              {game.icon}
-            </div>
-            <div>
-              <p className={styles.heroEyebrow}>{GAME_SKILL_LABELS[game.skillType]}</p>
-              <h1 className={styles.heroTitle}>{game.title}</h1>
-              <p className={styles.heroSubtitle}>
-                Exercise your <strong>{game.heroHighlight}</strong> skills by {game.heroDescription}
-              </p>
-            </div>
-          </div>
-        </div>
+          <p className={styles.heroSkill}>{skillLabel}</p>
+          <h1 className={styles.heroTitle}>{game.title}</h1>
+          <p className={styles.heroSubtitle}>
+            Exercise your <span>{game.heroHighlight}</span> skills by {game.heroDescription}
+          </p>
+        </section>
 
         <div className={styles.cards}>
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <span>{game.lpiLabel}</span>
+              <span className={styles.cardEyebrow}>{game.lpiLabel}</span>
               <Button mode="outline" size="s">
                 Unlock
               </Button>
@@ -60,7 +47,7 @@ export function GameDetailsLayout({ game, onBack, onPlay, onZenMode, onHowToPlay
 
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <span>{game.badgeTitle}</span>
+              <span className={styles.cardEyebrow}>{game.badgeTitle}</span>
             </div>
             <p className={styles.cardDescription}>{game.badgeDescription}</p>
             <div className={styles.badgeIcons} aria-label="Badge progress">
@@ -73,13 +60,16 @@ export function GameDetailsLayout({ game, onBack, onPlay, onZenMode, onHowToPlay
               <span>{game.progressTarget}</span>
             </div>
             <div className={styles.progressTrack}>
-              <div className={styles.progressFill} style={{ width: `${Math.min(1, game.progressValue) * 100}%`, background: game.accentColor }} />
+              <div
+                className={styles.progressFill}
+                style={{ width: `${Math.min(1, game.progressValue) * 100}%`, background: game.accentColor }}
+              />
             </div>
           </div>
 
           <div className={styles.card}>
             <div className={styles.cardHeader}>
-              <span>Legacy high scores</span>
+              <span className={styles.cardEyebrow}>Legacy high scores</span>
             </div>
             <div className={styles.highScores}>
               {game.highScoreStats.map((stat) => (
@@ -93,8 +83,8 @@ export function GameDetailsLayout({ game, onBack, onPlay, onZenMode, onHowToPlay
 
           <button type="button" className={`${styles.card} ${styles.howToPlay}`} onClick={onHowToPlay}>
             <div>
-              <span className={styles.howToPlayLabel}>How to play</span>
-              <p>{game.howToPlay}</p>
+              <span className={styles.cardEyebrow}>How to play</span>
+              <p className={styles.cardDescription}>{game.howToPlay}</p>
             </div>
             <span className={styles.howToPlayIcon}>›</span>
           </button>
@@ -108,18 +98,6 @@ export function GameDetailsLayout({ game, onBack, onPlay, onZenMode, onHowToPlay
         <Button size="l" mode="filled" className={styles.actionButton} onClick={onPlay}>
           Play
         </Button>
-      </div>
-    </div>
-  );
-}
-
-function HeroChip({ icon, label, value }: { icon: string; label: string; value: string }) {
-  return (
-    <div className={styles.heroChip}>
-      <span aria-hidden>{icon}</span>
-      <div>
-        <p>{label}</p>
-        <strong>{value}</strong>
       </div>
     </div>
   );

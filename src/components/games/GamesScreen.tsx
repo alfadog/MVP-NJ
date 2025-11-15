@@ -17,14 +17,16 @@ export function GamesScreen() {
 
   return (
     <div className={styles.screen}>
-      <header className={styles.header}>
+      <div className={styles.hero}>
+        <div>
+          <h1 className={styles.appTitle}>Games</h1>
+          <p className={styles.subtitle}>Pick a drill to train a specific skill lane.</p>
+        </div>
         <div className={styles.resources}>
           <ResourceChip label="Flame" value="0" icon="🔥" />
           <ResourceChip label="Energy" value="1167" icon="⚡️" />
         </div>
-        <h1 className={styles.pageTitle}>Games</h1>
-        <p className={styles.pageSubtitle}>Pick a drill to train a specific skill lane.</p>
-      </header>
+      </div>
 
       <section className={styles.section}>
         <SectionTitle title="Today's games" subtitle="Fresh picks to keep the streak alive" />

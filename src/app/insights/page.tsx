@@ -8,11 +8,13 @@ export default function InsightsPage() {
   return (
     <Page back={false}>
       <AppScaffold activeTab="insights">
-        <TabPlaceholder
-          title="Insights"
-          description="Unlock deeper pattern breakdowns, personalized recaps, and experiment results once premium tracking is wired up."
-          actionLabel="Premium preview"
-        />
+        <div className="page-shell">
+          <TabPlaceholder
+            title="Insights"
+            description="Unlock deeper pattern breakdowns, personalized recaps, and experiment results once premium tracking is wired up."
+            actionLabel="Premium preview"
+          />
+        </div>
       </AppScaffold>
     </Page>
   );
