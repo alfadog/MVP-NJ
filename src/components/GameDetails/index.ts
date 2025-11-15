@@ -1,0 +1,1 @@
+export { GameDetailsLayout } from './GameDetailsLayout';

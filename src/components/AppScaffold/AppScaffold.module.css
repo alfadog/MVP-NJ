@@ -1,0 +1,52 @@
+.scaffold {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--tg-theme-secondary_bg_color, #f3f5f9);
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 16px 120px;
+}
+
+.tabBar {
+  position: sticky;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: var(--tg-theme-bg_color, #ffffff);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+  gap: 4px;
+  z-index: 10;
+}
+
+.tabLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  font-size: 12px;
+  border-radius: 12px;
+  color: rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.tabLinkActive {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--tg-theme-text_color, #111);
+  font-weight: 600;
+}
+
+.tabIcon {
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.tabLabel {
+  line-height: 1.2;
+}

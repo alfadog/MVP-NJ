@@ -1,110 +1,96 @@
 'use client';
 
-import { Button, Card, List, Section } from '@telegram-apps/telegram-ui';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { Link } from '@/components/Link/Link';
+import { GameDetailsLayout } from '@/components/GameDetails';
 import { Page } from '@/components/Page';
-import { GAME_SKILL_LABELS, games, type GameComponentProps, type GameDefinition } from '@/games/config';
+import { GAME_SKILL_LABELS, games, type GameDefinition } from '@/games/config';
+import { PatternPeekGame } from '@/games/pattern-peek/PatternPeekGame';
+import type { GameComponentProps } from '@/games/config';
 import { useGameSession } from '@/games/useGameSession';
+
+import styles from './GameClient.module.css';
 
 interface GameClientProps {
   slug: string;
 }
 
+type GameViewMode = 'details' | 'playing';
+
 export function GameClient({ slug }: GameClientProps) {
+  const router = useRouter();
+  const [mode, setMode] = useState<GameViewMode>('details');
   const game = games.find((entry) => entry.slug === slug);
 
+  useEffect(() => {
+    setMode('details');
+  }, [slug]);
+
   if (!game) {
-    return <GameNotFound />;
+    return (
+      <Page>
+        <div className={styles.notFound}>
+          <h1>Game not found</h1>
+          <p>We could not locate this drill. Please return to the catalog.</p>
+          <button type="button" onClick={() => router.push('/games')}>
+            Back to games
+          </button>
+        </div>
+      </Page>
+    );
   }
 
-  return <GameView game={game} />;
-}
-
-function GameView({ game }: { game: GameDefinition }) {
-  const { startedAt, startGame, finishGame } = useGameSession(game.id, game.skillType);
-  const sessionApi: GameComponentProps['session'] = { startedAt, startGame, finishGame };
-  const GameComponent = game.component;
-
-  const handleStart = () => {
-    startGame();
-  };
-
-  const handleFinish = () => {
-    if (!startedAt) {
-      return;
-    }
-
-    const now = new Date();
-    const durationMs = now.getTime() - startedAt.getTime();
-    const score = 80 + Math.floor(Math.random() * 40);
-
-    finishGame({
-      score,
-      durationMs,
-    });
-  };
-
-  const skillLabel = GAME_SKILL_LABELS[game.skillType];
-
   return (
-    <Page>
-      <List>
-        {GameComponent ? (
-          <GameComponent game={game} session={sessionApi} />
-        ) : (
-          <Section header={game.title} footer={`${skillLabel} • ${game.shortDescription}`}>
-            <Card type="plain">
-              <Card.Cell subtitle="Session status">
-                {startedAt ? 'In progress' : 'Not started'}
-              </Card.Cell>
-              <Card.Cell subtitle="Skill focus">{skillLabel}</Card.Cell>
-              <Card.Cell>
-                <Button mode="filled" size="l" stretched disabled={Boolean(startedAt)} onClick={handleStart}>
-                  Start game
-                </Button>
-              </Card.Cell>
-              <Card.Cell>
-                <Button mode="outline" size="l" stretched disabled={!startedAt} onClick={handleFinish}>
-                  Finish session
-                </Button>
-              </Card.Cell>
-            </Card>
-          </Section>
-        )}
-        <Section>
-          <Card type="plain">
-            <Card.Cell>
-              <Link href="/games">
-                <Button size="m" stretched mode="outline">
-                  Back to games
-                </Button>
-              </Link>
-            </Card.Cell>
-          </Card>
-        </Section>
-      </List>
+    <Page back={false}>
+      {mode === 'details' ? (
+        <GameDetailsLayout
+          game={game}
+          onBack={() => router.push('/games')}
+          onPlay={() => setMode('playing')}
+          onZenMode={() => console.log(`Zen Mode coming soon for ${game.title}`)}
+          onHowToPlay={() => console.log(`How to play ${game.title}`)}
+        />
+      ) : (
+        <GamePlaySurface game={game} onExit={() => setMode('details')} />
+      )}
     </Page>
   );
 }
 
-function GameNotFound() {
+function GamePlaySurface({ game, onExit }: { game: GameDefinition; onExit: () => void }) {
+  const { startedAt, startGame, finishGame } = useGameSession(game.id, game.skillType);
+  const GameComponent = game.component ?? PatternPeekGame;
+  const sessionApi: GameComponentProps['session'] = { startedAt, startGame, finishGame };
+
   return (
-    <Page>
-      <List>
-        <Section header="Game not found" footer="Pick another challenge from the catalog">
-          <Card type="plain">
-            <Card.Cell subtitle="The requested game does not exist or is not ready yet." />
-            <Card.Cell>
-              <Link href="/games">
-                <Button size="l" mode="filled" stretched>
-                  Back to games
-                </Button>
-              </Link>
-            </Card.Cell>
-          </Card>
-        </Section>
-      </List>
-    </Page>
+    <div className={styles.playSurface}>
+      <header className={styles.playHeader}>
+        <button
+          type="button"
+          className={styles.playBackButton}
+          onClick={onExit}
+          aria-label="Back to details"
+        >
+          ←
+        </button>
+        <div>
+          <p className={styles.playEyebrow}>{GAME_SKILL_LABELS[game.skillType]}</p>
+          <h1 className={styles.playTitle}>{game.title}</h1>
+        </div>
+      </header>
+      <div className={styles.playBody}>
+        {GameComponent ? (
+          <GameComponent game={game} session={sessionApi} />
+        ) : (
+          <div className={styles.playFallback}>
+            <p>Gameplay prototype coming soon.</p>
+            <button type="button" onClick={onExit}>
+              Back to overview
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

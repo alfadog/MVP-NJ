@@ -1,0 +1,1 @@
+export { TabPlaceholder } from './TabPlaceholder';
