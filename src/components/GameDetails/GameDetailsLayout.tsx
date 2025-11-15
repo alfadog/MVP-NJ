@@ -3,6 +3,7 @@
 import { Button } from '@telegram-apps/telegram-ui';
 
 import { GAME_SKILL_LABELS, type GameDefinition } from '@/games/config';
+import { TopBar } from '@/components/TopBar';
 
 import styles from './GameDetailsLayout.module.css';
 
@@ -17,35 +18,30 @@ interface GameDetailsLayoutProps {
 export function GameDetailsLayout({ game, onBack, onPlay, onZenMode, onHowToPlay }: GameDetailsLayoutProps) {
   return (
     <div className={styles.wrapper}>
+      <TopBar
+        title={game.title}
+        subtitle={GAME_SKILL_LABELS[game.skillType]}
+        onBack={onBack}
+        alignTitle="start"
+        rightSlot={
+          <div className={styles.topChips}>
+            <HeroChip icon="🔥" label="Flame" value="0" />
+            <HeroChip icon="⚡️" label="Energy" value="1167" />
+          </div>
+        }
+      />
+
       <div className={styles.body}>
-        <div className={styles.hero} style={{ background: game.heroBackground }}>
-          <button
-            type="button"
-            className={styles.backButton}
-            onClick={onBack}
-            aria-label="Back to games"
-          >
-            ←
-          </button>
-          <div className={styles.heroTopRow}>
-            <div className={styles.heroResources}>
-              <HeroChip icon="🔥" label="Flame" value="0" />
-              <HeroChip icon="⚡️" label="Energy" value="1167" />
-            </div>
+        <section className={styles.hero} style={{ background: game.heroBackground }}>
+          <div className={styles.heroIcon} style={{ borderColor: game.accentColor }}>
+            {game.icon}
           </div>
-          <div className={styles.heroContent}>
-            <div className={styles.heroIcon} style={{ borderColor: game.accentColor }}>
-              {game.icon}
-            </div>
-            <div>
-              <p className={styles.heroEyebrow}>{GAME_SKILL_LABELS[game.skillType]}</p>
-              <h1 className={styles.heroTitle}>{game.title}</h1>
-              <p className={styles.heroSubtitle}>
-                Exercise your <strong>{game.heroHighlight}</strong> skills by {game.heroDescription}
-              </p>
-            </div>
+          <div>
+            <p className={styles.heroEyebrow}>Exercise your {game.heroHighlight} skills</p>
+            <h1 className={styles.heroTitle}>{game.title}</h1>
+            <p className={styles.heroSubtitle}>Stay sharp by {game.heroDescription}</p>
           </div>
-        </div>
+        </section>
 
         <div className={styles.cards}>
           <div className={styles.card}>
@@ -73,7 +69,10 @@ export function GameDetailsLayout({ game, onBack, onPlay, onZenMode, onHowToPlay
               <span>{game.progressTarget}</span>
             </div>
             <div className={styles.progressTrack}>
-              <div className={styles.progressFill} style={{ width: `${Math.min(1, game.progressValue) * 100}%`, background: game.accentColor }} />
+              <div
+                className={styles.progressFill}
+                style={{ width: `${Math.min(1, game.progressValue) * 100}%`, background: game.accentColor }}
+              />
             </div>
           </div>
 
