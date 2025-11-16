@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 
 import { MemoryMatrixGame } from './memory-matrix';
+import { MemoryMatrix2Game } from './memory-matrix-2';
 import { PatternPeekGame } from './pattern-peek/PatternPeekGame';
 
 export type GameSkillType =
@@ -108,6 +109,33 @@ export const games: GameDefinition[] = [
       { label: 'Rounds', value: '36' },
     ],
     howToPlay: 'Memorize the flashing tiles, then recreate the pattern without mistakes.',
+  },
+  {
+    id: 'memory-matrix-2',
+    slug: 'memory-matrix-2',
+    title: 'Memory Matrix 2',
+    shortDescription: 'The original challenge remastered inside MVP.',
+    skillType: 'MEMORY',
+    component: MemoryMatrix2Game,
+    icon: '🧠',
+    previewImage: '/games/memory-matrix-2/preview.svg',
+    accentColor: '#4B6BFB',
+    heroBackground: '#E7EDFF',
+    heroHighlight: 'Memory',
+    heroDescription: 'recreating every pattern exactly as it appeared.',
+    lpiLabel: 'GAME LPI',
+    lpiDescription: 'Keep your streak alive with flawless recall.',
+    badgeTitle: 'Matrix Master',
+    badgeDescription: 'Complete three grids without losing a life.',
+    badgeIcons: ['🧠', '🔷', '⭐️', '⚡️'],
+    progressLabel: 'Push to next tier',
+    progressValue: 0.42,
+    progressTarget: '6/14',
+    highScoreStats: [
+      { label: 'Points', value: '12080' },
+      { label: 'Rounds', value: '24' },
+    ],
+    howToPlay: 'Watch the highlighted tiles, memorize the exact shape, then tap the cells to recreate it.',
   },
   {
     id: 'turbo-tap',
