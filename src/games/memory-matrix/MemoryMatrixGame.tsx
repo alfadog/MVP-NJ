@@ -280,7 +280,7 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
                 <h3>{memoryMatrixCopy.idleTitle}</h3>
                 <p>{memoryMatrixCopy.idleSubtitle}</p>
                 <button type="button" className={styles.introButton} onClick={() => beginRound(0)}>
-                  Play pattern
+                  {memoryMatrixCopy.startButtonLabel}
                 </button>
               </div>
             </div>
