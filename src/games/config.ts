@@ -84,33 +84,6 @@ export const games: GameDefinition[] = [
     howToPlay: 'Memorize the flashing tiles, then recreate the pattern without mistakes.',
   },
   {
-    id: 'memory-matrix',
-    slug: 'memory-matrix',
-    title: 'Memory Matrix',
-    shortDescription: 'Recreate flashing tile patterns from memory.',
-    skillType: 'MEMORY',
-    component: MemoryMatrixGame,
-    icon: '🧠',
-    previewImage: '/games/memory-matrix/preview.svg',
-    accentColor: '#4B6BFB',
-    heroBackground: '#E7EDFF',
-    heroHighlight: 'Memory',
-    heroDescription: 'exercise your visual memory with expanding grids.',
-    lpiLabel: 'GAME LPI',
-    lpiDescription: 'Unlock deeper levels of brain training.',
-    badgeTitle: 'Brainiac Badge',
-    badgeDescription: 'Maintain high accuracy as the grid grows.',
-    badgeIcons: ['🔷', '🔶', '🟢', '⭐️'],
-    progressLabel: 'Achieve in 1 play',
-    progressValue: 0.85,
-    progressTarget: '14/15',
-    highScoreStats: [
-      { label: 'Points', value: '16690' },
-      { label: 'Rounds', value: '36' },
-    ],
-    howToPlay: 'Memorize the flashing tiles, then recreate the pattern without mistakes.',
-  },
-  {
     id: 'turbo-tap',
     slug: 'turbo-tap',
     title: 'Turbo Tap',
@@ -261,4 +234,4 @@ export const GAME_SKILL_ORDER: GameSkillType[] = [
   'MATH',
 ];
 
-export const todaysGameIds: string[] = ['memory-matrix', 'pattern-peek', 'turbo-tap', 'focus-lane', 'memory-sprint'];
+export const todaysGameIds: string[] = ['memory-matrix', 'turbo-tap', 'focus-lane', 'memory-sprint'];

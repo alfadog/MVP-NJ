@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { GameHud } from '@/components/GameHud';
 import type { GameComponentProps } from '@/games/config';
 import { reportGameResult } from '@/games/reporting';
 
@@ -11,22 +12,14 @@ import { OverlayMenu } from './components/OverlayMenu';
 import { RoundSummary } from './components/RoundSummary';
 import { useRoundTimer } from './hooks/useRoundTimer';
 import { MAX_LIVES, memoryMatrixLevels } from './logic/levels';
-import { evaluateRound, type RoundEvaluation, type RoundFeedback } from './logic/scoring';
+import { evaluateRound, type RoundFeedback, type RoundEvaluation } from './logic/scoring';
 import { createPattern } from './utils/pattern';
 import styles from './styles/MemoryMatrixGame.module.css';
 
-type Phase = 'intro' | 'preview' | 'recall' | 'summary' | 'game-over';
-
-const PHASE_HELPERS: Record<Phase, { helper: string; badge: string | null }> = {
-  intro: { helper: 'Tap start to reveal the flashing pattern.', badge: null },
-  preview: { helper: memoryMatrixCopy.previewPrompt, badge: 'Preview' },
-  recall: { helper: memoryMatrixCopy.recallPrompt, badge: 'Your turn' },
-  summary: { helper: memoryMatrixCopy.summaryBody, badge: 'Results' },
-  'game-over': { helper: memoryMatrixCopy.gameOverBody, badge: null },
-};
+type Phase = 'idle' | 'preview' | 'recall' | 'summary' | 'game-over';
 
 export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) {
-  const [phase, setPhase] = useState<Phase>('intro');
+  const [phase, setPhase] = useState<Phase>('idle');
   const [levelIndex, setLevelIndex] = useState(0);
   const [pattern, setPattern] = useState<number[]>([]);
   const [selection, setSelection] = useState<Set<number>>(new Set());
@@ -42,36 +35,69 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
 
   const currentLevel = memoryMatrixLevels[levelIndex];
   const { elapsedMs, formatted: timerLabel } = useRoundTimer(phase === 'recall');
-  const phaseHelper = PHASE_HELPERS[phase];
 
-  const formattedScore = useMemo(() => score.toString().padStart(5, '0'), [score]);
-  const overallAccuracy = totalTargets === 0 ? 0 : totalCorrect / totalTargets;
+  const stageTitle = useMemo(() => {
+    switch (phase) {
+      case 'preview':
+        return 'Memorize the pattern';
+      case 'recall':
+        return 'Recreate the grid';
+      case 'summary':
+        return 'Review your taps';
+      case 'game-over':
+        return memoryMatrixCopy.gameOverTitle;
+      default:
+        return memoryMatrixCopy.idleTitle;
+    }
+  }, [phase]);
+
+  const helperText = useMemo(() => {
+    switch (phase) {
+      case 'preview':
+        return memoryMatrixCopy.previewPrompt;
+      case 'recall':
+        return memoryMatrixCopy.recallPrompt;
+      case 'summary':
+        return memoryMatrixCopy.summaryBody;
+      case 'game-over':
+        return memoryMatrixCopy.gameOverBody;
+      default:
+        return memoryMatrixCopy.idleSubtitle;
+    }
+  }, [phase]);
+
+  const boardBanner = useMemo(() => {
+    if (phase === 'preview') return 'Memorize';
+    if (phase === 'recall') return 'Your turn';
+    if (phase === 'summary') return 'Pattern';
+    return null;
+  }, [phase]);
 
   const beginRound = useCallback(
-    (forcedIndex?: number) => {
-      const nextIndex = forcedIndex ?? levelIndex;
-      const level = memoryMatrixLevels[nextIndex];
+    (overrideIndex?: number) => {
+      const index = overrideIndex ?? levelIndex;
+      const nextLevel = memoryMatrixLevels[index];
 
-      if (!level) {
+      if (!nextLevel) {
         return;
       }
 
-      if (forcedIndex !== undefined) {
-        setLevelIndex(nextIndex);
+      if (overrideIndex !== undefined) {
+        setLevelIndex(index);
       }
+
+      const cells = nextLevel.gridSize * nextLevel.gridSize;
+      const nextPattern = createPattern(cells, nextLevel.patternLength);
 
       if (!session.startedAt) {
         session.startGame();
       }
 
-      const cellCount = level.gridSize * level.gridSize;
-      const nextPattern = createPattern(cellCount, level.patternLength);
-
       setPattern(nextPattern);
       setSelection(new Set());
-      setActiveCells(new Set(nextPattern));
       setFeedback(null);
       setRoundResult(null);
+      setActiveCells(new Set(nextPattern));
       setPhase('preview');
       setIsMenuOpen(false);
     },
@@ -79,13 +105,13 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
   );
 
   const resetGame = useCallback(() => {
-    setPhase('intro');
+    setPhase('idle');
     setLevelIndex(0);
     setPattern([]);
     setSelection(new Set());
-    setActiveCells(new Set());
     setFeedback(null);
     setRoundResult(null);
+    setActiveCells(new Set());
     setScore(0);
     setLives(MAX_LIVES);
     setRoundsPlayed(0);
@@ -94,47 +120,40 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
     setIsMenuOpen(false);
   }, []);
 
-  const submitRound = useCallback(() => {
-    if (phase !== 'recall') {
-      return;
-    }
+  const finalizeRound = useCallback(
+    (selectionSnapshot: Set<number>) => {
+      const level = memoryMatrixLevels[levelIndex];
 
-    const level = memoryMatrixLevels[levelIndex];
+      if (!level) {
+        return;
+      }
 
-    if (!level) {
-      return;
-    }
+      const evaluation = evaluateRound(pattern, selectionSnapshot, level, elapsedMs);
+      const nextLives = evaluation.status === 'fail' ? Math.max(0, lives - 1) : lives;
 
-    const selectionSnapshot = new Set(selection);
-    const evaluation = evaluateRound(pattern, selectionSnapshot, level, elapsedMs);
-    const nextLives = evaluation.status === 'fail' ? Math.max(0, lives - 1) : lives;
+      setFeedback(evaluation.feedback);
+      setRoundResult(evaluation);
+      setScore((prev) => prev + evaluation.pointsAwarded);
+      setRoundsPlayed((prev) => prev + 1);
+      setTotalTargets((prev) => prev + evaluation.totalTargets);
+      setTotalCorrect((prev) => prev + evaluation.correct);
+      setLives(nextLives);
 
-    setFeedback(evaluation.feedback);
-    setRoundResult(evaluation);
-    setScore((prev) => prev + evaluation.pointsAwarded);
-    setRoundsPlayed((prev) => prev + 1);
-    setTotalTargets((prev) => prev + evaluation.totalTargets);
-    setTotalCorrect((prev) => prev + evaluation.correct);
-    setLives(nextLives);
+      reportGameResult(game.id, evaluation.pointsAwarded, evaluation.accuracy, evaluation.levelId);
 
-    reportGameResult(game.id, evaluation.pointsAwarded, evaluation.accuracy, evaluation.levelId);
+      if (evaluation.status === 'success') {
+        setLevelIndex((prev) => Math.min(prev + 1, memoryMatrixLevels.length - 1));
+      }
 
-    if (evaluation.status === 'success') {
-      setLevelIndex((prev) => Math.min(prev + 1, memoryMatrixLevels.length - 1));
-    }
-
-    const canContinue = evaluation.status === 'success' || nextLives > 0;
-    setPhase(canContinue ? 'summary' : 'game-over');
-  }, [elapsedMs, game.id, levelIndex, lives, pattern, phase, selection]);
+      const willContinue = evaluation.status === 'success' || nextLives > 0;
+      setPhase(willContinue ? 'summary' : 'game-over');
+    },
+    [elapsedMs, game.id, levelIndex, lives, pattern],
+  );
 
   useEffect(() => {
     if (phase !== 'preview') {
-      setActiveCells((prev) => {
-        if (prev.size === 0) {
-          return prev;
-        }
-        return new Set();
-      });
+      setActiveCells((prev) => (prev.size ? new Set() : prev));
       return;
     }
 
@@ -151,6 +170,22 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
 
     return () => clearTimeout(timeout);
   }, [phase, levelIndex]);
+
+  useEffect(() => {
+    if (phase !== 'recall') {
+      return;
+    }
+
+    if (pattern.length === 0) {
+      return;
+    }
+
+    if (selection.size !== pattern.length) {
+      return;
+    }
+
+    finalizeRound(new Set(selection));
+  }, [phase, selection, pattern, finalizeRound]);
 
   useEffect(() => {
     if (phase !== 'game-over') {
@@ -192,6 +227,10 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
     });
   };
 
+  const handleMenuRestart = () => {
+    beginRound(levelIndex);
+  };
+
   const handleSummaryAction = () => {
     if (phase === 'summary') {
       beginRound();
@@ -201,62 +240,30 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
     }
   };
 
-  const handleMenuRestart = () => {
-    beginRound(levelIndex);
-  };
-
-  const helperText = phaseHelper?.helper ?? '';
-  const boardBadge = phaseHelper?.badge ?? null;
-  const canSubmit = phase === 'recall' && selection.size === pattern.length;
-
-  const summaryMeta = useMemo(() => {
-    if (!roundResult) {
-      return [];
-    }
-
-    return [
-      { label: 'Correct', value: `${roundResult.correct}/${roundResult.totalTargets}` },
-      { label: 'Time', value: `${(roundResult.elapsedMs / 1000).toFixed(1)}s` },
-    ];
-  }, [roundResult]);
-
-  const finalMeta = useMemo(
-    () => [
-      { label: 'Rounds', value: roundsPlayed.toString() },
-      { label: 'Lives left', value: `${lives}` },
-    ],
-    [roundsPlayed, lives],
-  );
+  const formattedScore = score.toString().padStart(2, '0');
+  const levelLabel = `L${currentLevel?.id ?? 1}`;
+  const overallAccuracy = totalTargets === 0 ? 0 : totalCorrect / totalTargets;
 
   return (
-    <div className={styles.matrix}>
-      <header className={styles.hud}>
-        <button type="button" className={styles.hudButton} onClick={() => setIsMenuOpen(true)}>
-          Menu
-        </button>
-        <div className={styles.hudStat}>
-          <span className={styles.hudLabel}>Timer</span>
-          <strong className={styles.hudValue}>{timerLabel}</strong>
-        </div>
-        <div className={styles.hudStat}>
-          <span className={styles.hudLabel}>Score</span>
-          <strong className={styles.hudValue}>{formattedScore}</strong>
-        </div>
-      </header>
-
-      <div className={styles.levelBadge}>Level {currentLevel?.id ?? 1}</div>
-
-      <div className={styles.livesRow} aria-label="Lives">
-        {Array.from({ length: MAX_LIVES }, (_, index) => (
-          <span key={index} className={`${styles.life} ${index < lives ? styles.lifeActive : ''}`} />
-        ))}
-      </div>
+    <div className={styles.game}>
+      <GameHud levelLabel={levelLabel} timerLabel={timerLabel} scoreLabel={formattedScore} onMenuClick={() => setIsMenuOpen(true)} />
 
       <div className={styles.stage}>
-        <p className={styles.helper}>{helperText}</p>
+        <div className={styles.stageHeader}>
+          <div>
+            <p className={styles.phaseLabel}>Memory</p>
+            <h2 className={styles.stageTitle}>{stageTitle}</h2>
+          </div>
+          <div className={styles.lives} aria-label="Lives">
+            {Array.from({ length: MAX_LIVES }, (_, index) => (
+              <span key={index} className={`${styles.life} ${index < lives ? styles.lifeActive : ''}`} />
+            ))}
+          </div>
+        </div>
+        <p className={styles.helperText}>{helperText}</p>
 
-        <div className={styles.boardShell}>
-          {boardBadge ? <span className={styles.boardBadge}>{boardBadge}</span> : null}
+        <div className={styles.boardWrapper}>
+          {boardBanner ? <span className={styles.statusRibbon}>{boardBanner}</span> : null}
 
           <MemoryMatrixBoard
             gridSize={currentLevel?.gridSize ?? 3}
@@ -267,14 +274,13 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
             onSelect={handleCellSelect}
           />
 
-          {phase === 'intro' ? (
+          {phase === 'idle' ? (
             <div className={styles.introOverlay}>
               <div className={styles.introCard}>
-                <p className={styles.introLabel}>{memoryMatrixCopy.title}</p>
-                <h3 className={styles.introTitle}>{memoryMatrixCopy.introTitle}</h3>
-                <p className={styles.introBody}>{memoryMatrixCopy.introSubtitle}</p>
+                <h3>{memoryMatrixCopy.idleTitle}</h3>
+                <p>{memoryMatrixCopy.idleSubtitle}</p>
                 <button type="button" className={styles.introButton} onClick={() => beginRound(0)}>
-                  {memoryMatrixCopy.startLabel}
+                  Play pattern
                 </button>
               </div>
             </div>
@@ -287,9 +293,8 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
               accuracy={roundResult.accuracy}
               points={roundResult.pointsAwarded}
               levelLabel={roundResult.levelId.toString()}
-              actionLabel={roundResult.status === 'success' ? 'Continue' : 'Retry level'}
+              actionLabel={roundResult.status === 'success' ? 'Next pattern' : 'Try again'}
               onAction={handleSummaryAction}
-              meta={summaryMeta}
             />
           ) : null}
 
@@ -302,7 +307,6 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
               levelLabel={(roundResult?.levelId ?? currentLevel?.id ?? 1).toString()}
               actionLabel="Play again"
               onAction={handleSummaryAction}
-              meta={finalMeta}
             />
           ) : null}
 
@@ -321,27 +325,6 @@ export function MemoryMatrixGame({ game, session, onExit }: GameComponentProps) 
             />
           ) : null}
         </div>
-
-        <div className={styles.levelMeta}>
-          <div>
-            <span>Grid</span>
-            <strong>
-              {currentLevel?.gridSize ?? 3}×{currentLevel?.gridSize ?? 3}
-            </strong>
-          </div>
-          <div>
-            <span>Tiles</span>
-            <strong>{currentLevel?.patternLength ?? 3}</strong>
-          </div>
-        </div>
-
-        {phase === 'recall' ? (
-          <div className={styles.controls}>
-            <button type="button" className={styles.actionButton} disabled={!canSubmit} onClick={submitRound}>
-              {memoryMatrixCopy.submitLabel}
-            </button>
-          </div>
-        ) : null}
       </div>
     </div>
   );
