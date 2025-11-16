@@ -8,10 +8,9 @@ interface RoundSummaryProps {
   levelLabel: string;
   actionLabel: string;
   onAction: () => void;
-  meta?: { label: string; value: string }[];
 }
 
-export function RoundSummary({ title, body, accuracy, points, levelLabel, actionLabel, onAction, meta }: RoundSummaryProps) {
+export function RoundSummary({ title, body, accuracy, points, levelLabel, actionLabel, onAction }: RoundSummaryProps) {
   return (
     <div className={styles.summaryOverlay} role="dialog" aria-modal>
       <div className={styles.summaryCard}>
@@ -28,16 +27,6 @@ export function RoundSummary({ title, body, accuracy, points, levelLabel, action
             <strong>{points}</strong>
           </div>
         </div>
-        {meta?.length ? (
-          <div className={styles.summaryMeta}>
-            {meta.map((item) => (
-              <div key={item.label}>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-              </div>
-            ))}
-          </div>
-        ) : null}
         <button type="button" className={styles.summaryAction} onClick={onAction}>
           {actionLabel}
         </button>
