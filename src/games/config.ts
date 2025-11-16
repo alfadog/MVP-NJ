@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 
+import { MemoryMatrixGame } from './memory-matrix';
 import { PatternPeekGame } from './pattern-peek/PatternPeekGame';
 
 export type GameSkillType =
@@ -37,6 +38,7 @@ export interface GameDefinition {
   skillType: GameSkillType;
   component?: ComponentType<GameComponentProps>;
   icon: string;
+  previewImage?: string;
   accentColor: string;
   heroBackground: string;
   heroHighlight: string;
@@ -58,7 +60,7 @@ export const games: GameDefinition[] = [
     id: 'pattern-peek',
     slug: 'pattern-peek',
     title: 'Pattern Peek',
-    shortDescription: 'Remember symbol grids that disappear in seconds.',
+    shortDescription: 'Stay sharp by spotting the highlighted tiles before they vanish.',
     skillType: 'MEMORY',
     component: PatternPeekGame,
     icon: '🧩',
@@ -70,6 +72,33 @@ export const games: GameDefinition[] = [
     lpiDescription: 'Unlock deeper levels of brain training.',
     badgeTitle: 'Brainiac Badge',
     badgeDescription: 'Score 90+ accuracy to fill each gem.',
+    badgeIcons: ['🔷', '🔶', '🟢', '⭐️'],
+    progressLabel: 'Achieve in 1 play',
+    progressValue: 0.85,
+    progressTarget: '14/15',
+    highScoreStats: [
+      { label: 'Points', value: '16690' },
+      { label: 'Rounds', value: '36' },
+    ],
+    howToPlay: 'Memorize the flashing tiles, then recreate the pattern without mistakes.',
+  },
+  {
+    id: 'memory-matrix',
+    slug: 'memory-matrix',
+    title: 'Memory Matrix',
+    shortDescription: 'Recreate flashing tile patterns from memory.',
+    skillType: 'MEMORY',
+    component: MemoryMatrixGame,
+    icon: '🧠',
+    previewImage: '/games/memory-matrix/preview.svg',
+    accentColor: '#4B6BFB',
+    heroBackground: '#E7EDFF',
+    heroHighlight: 'Memory',
+    heroDescription: 'exercise your visual memory with expanding grids.',
+    lpiLabel: 'GAME LPI',
+    lpiDescription: 'Unlock deeper levels of brain training.',
+    badgeTitle: 'Brainiac Badge',
+    badgeDescription: 'Maintain high accuracy as the grid grows.',
     badgeIcons: ['🔷', '🔶', '🟢', '⭐️'],
     progressLabel: 'Achieve in 1 play',
     progressValue: 0.85,
@@ -231,4 +260,10 @@ export const GAME_SKILL_ORDER: GameSkillType[] = [
   'MATH',
 ];
 
-export const todaysGameIds: string[] = ['pattern-peek', 'turbo-tap', 'focus-lane', 'memory-sprint'];
+export const todaysGameIds: string[] = [
+  'memory-matrix',
+  'pattern-peek',
+  'turbo-tap',
+  'focus-lane',
+  'memory-sprint',
+];

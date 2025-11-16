@@ -1,7 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
+# root workspace dependencies
 /node_modules
+# standalone memory_matrix install
+/memory_matrix/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz

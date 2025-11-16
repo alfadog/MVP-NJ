@@ -5,14 +5,32 @@ import {
   games,
   todaysGameIds,
 } from '@/games/config';
-import type { GameDefinition } from '@/games/config';
+import type { GameDefinition, GameSkillType } from '@/games/config';
 
 import styles from './GamesScreen.module.css';
 import { GameCard } from './GameCard';
 
+const gamesById = games.reduce<Record<string, GameDefinition>>((acc, game) => {
+  acc[game.id] = game;
+  return acc;
+}, {});
+
+const gamesBySkill = games.reduce<Record<GameSkillType, GameDefinition[]>>(
+  (acc, game) => {
+    if (!acc[game.skillType]) {
+      acc[game.skillType] = [];
+    }
+
+    acc[game.skillType]!.push(game);
+
+    return acc;
+  },
+  {} as Record<GameSkillType, GameDefinition[]>,
+);
+
 export function GamesScreen() {
   const todaysGames = todaysGameIds
-    .map((id) => games.find((game) => game.id === id))
+    .map((id) => gamesById[id])
     .filter((game): game is GameDefinition => Boolean(game));
 
   return (
@@ -38,7 +56,7 @@ export function GamesScreen() {
       </section>
 
       {GAME_SKILL_ORDER.map((skillType) => {
-        const skillGames = games.filter((game) => game.skillType === skillType);
+        const skillGames = gamesBySkill[skillType] ?? [];
 
         if (!skillGames.length) {
           return null;
