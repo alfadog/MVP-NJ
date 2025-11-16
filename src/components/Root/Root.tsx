@@ -13,6 +13,7 @@ import { AppRoot } from '@telegram-apps/telegram-ui';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorPage } from '@/components/ErrorPage';
 import { useDidMount } from '@/hooks/useDidMount';
+import { useTelegramShell } from '@/hooks/useTelegramShell';
 import { setLocale } from '@/core/i18n/locale';
 
 import './styles.css';
@@ -22,6 +23,8 @@ function RootInner({ children }: PropsWithChildren) {
 
   const isDark = useSignal(miniApp.isDark);
   const initDataUser = useSignal(initData.user);
+
+  useTelegramShell();
 
   // Set the user locale.
   useEffect(() => {
