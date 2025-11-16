@@ -19,8 +19,11 @@ export function useTelegramShell() {
   useEffect(() => {
     // Inform Telegram that the UI is ready as soon as we mount on the client.
     miniApp.ready.ifAvailable?.();
+    miniApp.setHeaderColor.ifAvailable?.('secondary_bg_color');
+    miniApp.setBackgroundColor.ifAvailable?.('secondary_bg_color');
 
     // Request the maximum height and expose --tg-viewport-* CSS variables.
+    miniApp.expand.ifAvailable?.();
     expandViewport.ifAvailable?.();
     const [cssVarsBound, stopBinding] = bindViewportCssVars.ifAvailable
       ? bindViewportCssVars.ifAvailable()
