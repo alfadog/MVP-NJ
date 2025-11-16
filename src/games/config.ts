@@ -57,13 +57,14 @@ export interface GameDefinition {
 
 export const games: GameDefinition[] = [
   {
-    id: 'pattern-peek',
-    slug: 'pattern-peek',
+    id: 'memory-matrix',
+    slug: 'memory-matrix',
     title: 'Pattern Peek',
-    shortDescription: 'Remember symbol grids that disappear in seconds.',
+    shortDescription: 'Stay sharp by spotting the highlighted tiles before they vanish.',
     skillType: 'MEMORY',
-    component: PatternPeekGame,
+    component: MemoryMatrixGame,
     icon: '🧩',
+    previewImage: '/games/memory-matrix/preview.svg',
     accentColor: '#4B6BFB',
     heroBackground: '#E7EDFF',
     heroHighlight: 'Memory',
