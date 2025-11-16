@@ -57,14 +57,13 @@ export interface GameDefinition {
 
 export const games: GameDefinition[] = [
   {
-    id: 'memory-matrix',
-    slug: 'memory-matrix',
+    id: 'pattern-peek',
+    slug: 'pattern-peek',
     title: 'Pattern Peek',
     shortDescription: 'Stay sharp by spotting the highlighted tiles before they vanish.',
     skillType: 'MEMORY',
-    component: MemoryMatrixGame,
+    component: PatternPeekGame,
     icon: '🧩',
-    previewImage: '/games/memory-matrix/preview.svg',
     accentColor: '#4B6BFB',
     heroBackground: '#E7EDFF',
     heroHighlight: 'Memory',
@@ -261,4 +260,10 @@ export const GAME_SKILL_ORDER: GameSkillType[] = [
   'MATH',
 ];
 
-export const todaysGameIds: string[] = ['memory-matrix', 'turbo-tap', 'focus-lane', 'memory-sprint'];
+export const todaysGameIds: string[] = [
+  'memory-matrix',
+  'pattern-peek',
+  'turbo-tap',
+  'focus-lane',
+  'memory-sprint',
+];
