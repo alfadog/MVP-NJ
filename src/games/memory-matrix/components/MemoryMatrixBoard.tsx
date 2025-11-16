@@ -4,7 +4,7 @@ import type { RoundFeedback } from '../logic/scoring';
 import { GridCell } from './GridCell';
 import styles from '../styles/MemoryMatrixGame.module.css';
 
-type Phase = 'idle' | 'preview' | 'recall' | 'summary' | 'game-over';
+type Phase = 'intro' | 'preview' | 'recall' | 'summary' | 'game-over';
 
 interface MemoryMatrixBoardProps {
   gridSize: number;
