@@ -1,5 +1,5 @@
 .playSurface {
-  min-height: 100vh;
+  min-height: var(--tg-viewport-height, 100vh);
   display: flex;
   flex-direction: column;
   background: var(--color-app-background);
@@ -39,7 +39,7 @@
 }
 
 .notFound {
-  min-height: 100vh;
+  min-height: var(--tg-viewport-height, 100vh);
   display: flex;
   flex-direction: column;
   gap: 12px;
