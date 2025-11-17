@@ -1,0 +1,59 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+}
+
+.backButton {
+  border: none;
+  background: rgba(0, 0, 0, 0.04);
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.toolbarTitle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.toolbarTitle strong {
+  font-size: 16px;
+}
+
+.toolbarTitle span {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.toolbarSpacer {
+  width: 70px;
+}
+
+.surface {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.gameHost {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--color-shadow-soft, 0 20px 40px rgba(15, 23, 42, 0.2));
+}
