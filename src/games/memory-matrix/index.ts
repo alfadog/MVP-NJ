@@ -1,1 +1,0 @@
-export { MemoryMatrixGame } from './MemoryMatrixGame';

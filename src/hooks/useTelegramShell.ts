@@ -23,7 +23,6 @@ export function useTelegramShell() {
     miniApp.setBackgroundColor.ifAvailable?.('secondary_bg_color');
 
     // Request the maximum height and expose --tg-viewport-* CSS variables.
-    miniApp.expand.ifAvailable?.();
     expandViewport.ifAvailable?.();
     const [cssVarsBound, stopBinding] = bindViewportCssVars.ifAvailable
       ? bindViewportCssVars.ifAvailable()

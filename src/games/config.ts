@@ -1,8 +1,7 @@
 import type { ComponentType } from 'react';
 
-import { MemoryMatrixGame } from './memory-matrix';
-import { MemoryMatrix2Game } from './memory-matrix-2';
 import { PatternPeekGame } from './pattern-peek/PatternPeekGame';
+import { MemoryMatrixOriginalGame } from './memory-matrix-original';
 
 export type GameSkillType =
   | 'MEMORY'
@@ -84,58 +83,31 @@ export const games: GameDefinition[] = [
     howToPlay: 'Memorize the flashing tiles, then recreate the pattern without mistakes.',
   },
   {
-    id: 'memory-matrix',
-    slug: 'memory-matrix',
+    id: 'memory-matrix-original',
+    slug: 'memory-matrix-original',
     title: 'Memory Matrix',
-    shortDescription: 'Recreate flashing tile patterns from memory.',
+    shortDescription: 'Memorize the pattern, then tap the same cells.',
     skillType: 'MEMORY',
-    component: MemoryMatrixGame,
+    component: MemoryMatrixOriginalGame,
     icon: '🧠',
-    previewImage: '/games/memory-matrix/preview.svg',
+    previewImage: '/games/memory-matrix-original/preview.svg',
     accentColor: '#4B6BFB',
     heroBackground: '#E7EDFF',
     heroHighlight: 'Memory',
-    heroDescription: 'exercise your visual memory with expanding grids.',
+    heroDescription: 'recreating tile patterns with increasing difficulty.',
     lpiLabel: 'GAME LPI',
-    lpiDescription: 'Unlock deeper levels of brain training.',
-    badgeTitle: 'Brainiac Badge',
-    badgeDescription: 'Maintain high accuracy as the grid grows.',
-    badgeIcons: ['🔷', '🔶', '🟢', '⭐️'],
-    progressLabel: 'Achieve in 1 play',
-    progressValue: 0.85,
-    progressTarget: '14/15',
-    highScoreStats: [
-      { label: 'Points', value: '16690' },
-      { label: 'Rounds', value: '36' },
-    ],
-    howToPlay: 'Memorize the flashing tiles, then recreate the pattern without mistakes.',
-  },
-  {
-    id: 'memory-matrix-2',
-    slug: 'memory-matrix-2',
-    title: 'Memory Matrix 2',
-    shortDescription: 'The original challenge remastered inside MVP.',
-    skillType: 'MEMORY',
-    component: MemoryMatrix2Game,
-    icon: '🧠',
-    previewImage: '/games/memory-matrix-2/preview.svg',
-    accentColor: '#4B6BFB',
-    heroBackground: '#E7EDFF',
-    heroHighlight: 'Memory',
-    heroDescription: 'recreating every pattern exactly as it appeared.',
-    lpiLabel: 'GAME LPI',
-    lpiDescription: 'Keep your streak alive with flawless recall.',
+    lpiDescription: 'Train your visual working memory with consistent practice.',
     badgeTitle: 'Matrix Master',
-    badgeDescription: 'Complete three grids without losing a life.',
+    badgeDescription: 'Reach a high level without losing your streak.',
     badgeIcons: ['🧠', '🔷', '⭐️', '⚡️'],
     progressLabel: 'Push to next tier',
-    progressValue: 0.42,
-    progressTarget: '6/14',
+    progressValue: 0.5,
+    progressTarget: 'Best level / best score',
     highScoreStats: [
-      { label: 'Points', value: '12080' },
-      { label: 'Rounds', value: '24' },
+      { label: 'Best level', value: '12' },
+      { label: 'Best score', value: '794' },
     ],
-    howToPlay: 'Watch the highlighted tiles, memorize the exact shape, then tap the cells to recreate it.',
+    howToPlay: 'Watch the highlighted cells, memorize the pattern, then tap the same cells in order.',
   },
   {
     id: 'turbo-tap',
@@ -289,7 +261,7 @@ export const GAME_SKILL_ORDER: GameSkillType[] = [
 ];
 
 export const todaysGameIds: string[] = [
-  'memory-matrix',
+  'memory-matrix-original',
   'pattern-peek',
   'turbo-tap',
   'focus-lane',
