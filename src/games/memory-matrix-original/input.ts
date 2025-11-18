@@ -398,7 +398,7 @@ export function setupGridInputController(options: GridInputControllerOptions): G
   };
 }
 
-function resolveCellFromEvent(grid: HTMLElement, event: PointerEvent): HTMLButtonElement | null {
+export function resolveCellFromEvent(grid: HTMLElement, event: PointerEvent): HTMLButtonElement | null {
   const target = event.target as Element | null;
   if (target) {
     const cell = target.closest<HTMLButtonElement>('.cell');

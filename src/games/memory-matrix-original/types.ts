@@ -1,3 +1,5 @@
+import type { NormalizedInputEvent } from '@/core/input';
+
 export type ThemeScheme = 'light' | 'dark';
 
 export interface GameState {
@@ -47,4 +49,9 @@ export interface UIOptions {
   onStartGame?: () => void;
   onFinishGame?: (result: GameResultPayload) => void;
   onExit?: () => void;
+  bindInputHandlers?: (handlers: GameInputHandlers) => (() => void) | void;
+}
+
+export interface GameInputHandlers {
+  onTap?: (event: NormalizedInputEvent) => void;
 }
