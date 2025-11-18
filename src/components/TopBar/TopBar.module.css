@@ -1,6 +1,6 @@
 .wrapper {
   position: sticky;
-  top: var(--app-header-offset);
+  top: 0;
   z-index: 20;
 }
 
