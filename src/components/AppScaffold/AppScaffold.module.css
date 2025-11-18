@@ -14,7 +14,7 @@
 
 .settingsButton {
   position: fixed;
-  top: calc(var(--app-header-offset) + 12px);
+  top: calc(12px + env(safe-area-inset-top));
   right: 16px;
   width: 44px;
   height: 44px;

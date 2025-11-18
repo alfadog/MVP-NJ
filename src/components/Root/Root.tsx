@@ -12,7 +12,6 @@ import { AppRoot } from '@telegram-apps/telegram-ui';
 
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ErrorPage } from '@/components/ErrorPage';
-import { CustomHeader } from '@/components/CustomHeader';
 import { useDidMount } from '@/hooks/useDidMount';
 import { useTelegramShell } from '@/hooks/useTelegramShell';
 import { setLocale } from '@/core/i18n/locale';
@@ -34,7 +33,6 @@ function RootInner({ children }: PropsWithChildren) {
 
   return (
     <TonConnectUIProvider manifestUrl="/tonconnect-manifest.json">
-      <CustomHeader />
       <AppRoot
         appearance={isDark ? 'dark' : 'light'}
         platform={
