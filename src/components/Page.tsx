@@ -1,6 +1,6 @@
 'use client';
 
-import { backButton } from '@telegram-apps/sdk-react';
+import { backButton, miniApp } from '@telegram-apps/sdk-react';
 import { PropsWithChildren, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -14,18 +14,23 @@ export function Page({ children, back = true }: PropsWithChildren<{
   const router = useRouter();
 
   useEffect(() => {
-    if (back) {
-      backButton.show();
-    } else {
+    backButton.show();
+
+    return () => {
       backButton.hide();
-    }
-  }, [back]);
+    };
+  }, []);
 
   useEffect(() => {
     return backButton.onClick(() => {
-      router.back();
+      if (back) {
+        router.back();
+        return;
+      }
+
+      miniApp.close.ifAvailable?.();
     });
-  }, [router]);
+  }, [back, router]);
 
   return <>{children}</>;
 }
