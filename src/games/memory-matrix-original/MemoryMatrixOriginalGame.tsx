@@ -1,18 +1,26 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { miniApp, useSignal } from '@telegram-apps/sdk-react';
 
 import type { GameComponentProps } from '../config';
 
 import { MEMORY_MATRIX_ORIGINAL_CSS } from './memoryMatrixOriginalStyles';
 import { initMemoryMatrixOriginalUI } from './ui';
+import type { ThemeScheme } from './types';
 import styles from './MemoryMatrixOriginalGame.module.css';
 
-export function MemoryMatrixOriginalGame({ game, session, onExit }: GameComponentProps) {
+export function MemoryMatrixOriginalGame({ session, onExit }: GameComponentProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const startGameRef = useRef(session.startGame);
   const finishGameRef = useRef(session.finishGame);
   const exitRef = useRef(onExit);
+  const isDark = useSignal(miniApp.isDark);
+  const preferredScheme = (isDark ? 'dark' : 'light') as ThemeScheme;
+  const initialSchemeRef = useRef<ThemeScheme | null>(null);
+  if (initialSchemeRef.current === null) {
+    initialSchemeRef.current = preferredScheme;
+  }
 
   useEffect(() => {
     startGameRef.current = session.startGame;
@@ -32,6 +40,15 @@ export function MemoryMatrixOriginalGame({ game, session, onExit }: GameComponen
       return;
     }
 
+    host.setAttribute('data-theme', preferredScheme);
+  }, [preferredScheme]);
+
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) {
+      return;
+    }
+
     const shadow = host.shadowRoot ?? host.attachShadow({ mode: 'open' });
     shadow.innerHTML = '';
 
@@ -42,12 +59,10 @@ export function MemoryMatrixOriginalGame({ game, session, onExit }: GameComponen
     const root = document.createElement('div');
     shadow.append(root);
 
-    const scheme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
     const cleanup = initMemoryMatrixOriginalUI({
       container: root,
       hostElement: host,
-      initialScheme: scheme,
+      initialScheme: initialSchemeRef.current ?? 'light',
       onStartGame: () => {
         startGameRef.current();
       },
@@ -66,22 +81,8 @@ export function MemoryMatrixOriginalGame({ game, session, onExit }: GameComponen
   }, []);
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.toolbar}>
-        <button type="button" className={styles.backButton} onClick={onExit}>
-          ‹ Games
-        </button>
-        <div className={styles.toolbarTitle}>
-          <strong>{game.title}</strong>
-          <span>Original mode</span>
-        </div>
-        <span className={styles.toolbarSpacer} aria-hidden>
-          ​
-        </span>
-      </div>
-      <div className={styles.surface}>
-        <div ref={hostRef} className={styles.gameHost} />
-      </div>
+    <div className={styles.fullscreen}>
+      <div ref={hostRef} className={styles.gameHost} />
     </div>
   );
 }
