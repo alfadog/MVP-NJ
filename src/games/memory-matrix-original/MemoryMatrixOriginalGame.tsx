@@ -8,7 +8,7 @@ import { MEMORY_MATRIX_ORIGINAL_CSS } from './memoryMatrixOriginalStyles';
 import { initMemoryMatrixOriginalUI } from './ui';
 import styles from './MemoryMatrixOriginalGame.module.css';
 
-export function MemoryMatrixOriginalGame({ session, onExit }: GameComponentProps) {
+export function MemoryMatrixOriginalGame({ game, session, onExit }: GameComponentProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const startGameRef = useRef(session.startGame);
   const finishGameRef = useRef(session.finishGame);
@@ -25,18 +25,6 @@ export function MemoryMatrixOriginalGame({ session, onExit }: GameComponentProps
   useEffect(() => {
     exitRef.current = onExit;
   }, [onExit]);
-
-  useEffect(() => {
-    const prevBodyOverflow = document.body.style.overflow;
-    const prevHtmlOverflow = document.documentElement.style.overflow;
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = prevBodyOverflow;
-      document.documentElement.style.overflow = prevHtmlOverflow;
-    };
-  }, []);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -78,8 +66,22 @@ export function MemoryMatrixOriginalGame({ session, onExit }: GameComponentProps
   }, []);
 
   return (
-    <div className={styles.fullscreenSurface}>
-      <div ref={hostRef} className={styles.gameHost} data-testid="memory-matrix-original-host" />
+    <div className={styles.wrapper}>
+      <div className={styles.toolbar}>
+        <button type="button" className={styles.backButton} onClick={onExit}>
+          ‹ Games
+        </button>
+        <div className={styles.toolbarTitle}>
+          <strong>{game.title}</strong>
+          <span>Original mode</span>
+        </div>
+        <span className={styles.toolbarSpacer} aria-hidden>
+          ​
+        </span>
+      </div>
+      <div className={styles.surface}>
+        <div ref={hostRef} className={styles.gameHost} />
+      </div>
     </div>
   );
 }
