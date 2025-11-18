@@ -7,7 +7,21 @@ import {
   enableVerticalSwipes,
   expandViewport,
   miniApp,
+  useSignal,
 } from '@telegram-apps/sdk-react';
+
+const CHROME_COLOR_FALLBACK = '#f6f3ef';
+
+function readAppBackgroundColor() {
+  if (typeof window === 'undefined') {
+    return CHROME_COLOR_FALLBACK;
+  }
+
+  const styles = getComputedStyle(document.documentElement);
+  const value = styles.getPropertyValue('--color-app-background').trim();
+
+  return value || CHROME_COLOR_FALLBACK;
+}
 
 /**
  * Keeps the Mini App shell in sync with Telegram's full-screen experience.
@@ -16,11 +30,21 @@ import {
  * - Disables the swipe-to-collapse gesture to avoid accidental closes.
  */
 export function useTelegramShell() {
+  const isDark = useSignal(miniApp.isDark);
+
   useEffect(() => {
     // Inform Telegram that the UI is ready as soon as we mount on the client.
     miniApp.ready.ifAvailable?.();
-    miniApp.setHeaderColor.ifAvailable?.('secondary_bg_color');
-    miniApp.setBackgroundColor.ifAvailable?.('secondary_bg_color');
+
+    const syncChromeColors = () => {
+      const chromeColor = readAppBackgroundColor();
+
+      miniApp.setHeaderColor.ifAvailable?.(chromeColor);
+      miniApp.setBackgroundColor.ifAvailable?.(chromeColor);
+      miniApp.setBottomBarColor.ifAvailable?.(chromeColor);
+    };
+
+    syncChromeColors();
 
     // Request the maximum height and expose --tg-viewport-* CSS variables.
     expandViewport.ifAvailable?.();
@@ -59,5 +83,5 @@ export function useTelegramShell() {
       // Re-enable the default gesture if the component ever unmounts (e.g. HMR).
       enableVerticalSwipes.ifAvailable?.();
     };
-  }, []);
+  }, [isDark]);
 }
