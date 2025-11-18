@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { miniApp, useSignal } from '@telegram-apps/sdk-react';
 
 import type { GameComponentProps } from '../config';
 
+import { InputSurface } from '@/components/input/InputSurface';
+import type { NormalizedInputEvent } from '@/core/input';
 import { MEMORY_MATRIX_ORIGINAL_CSS } from './memoryMatrixOriginalStyles';
 import { initMemoryMatrixOriginalUI } from './ui';
 import type { ThemeScheme } from './types';
@@ -12,6 +14,7 @@ import styles from './MemoryMatrixOriginalGame.module.css';
 
 export function MemoryMatrixOriginalGame({ session, onExit }: GameComponentProps) {
   const hostRef = useRef<HTMLDivElement | null>(null);
+  const tapHandlerRef = useRef<((event: NormalizedInputEvent) => void) | null>(null);
   const startGameRef = useRef(session.startGame);
   const finishGameRef = useRef(session.finishGame);
   const exitRef = useRef(onExit);
@@ -72,6 +75,14 @@ export function MemoryMatrixOriginalGame({ session, onExit }: GameComponentProps
       onExit: () => {
         exitRef.current();
       },
+      bindInputHandlers: (handlers) => {
+        tapHandlerRef.current = handlers.onTap ?? null;
+        return () => {
+          if (tapHandlerRef.current === handlers.onTap) {
+            tapHandlerRef.current = null;
+          }
+        };
+      },
     });
 
     return () => {
@@ -80,9 +91,17 @@ export function MemoryMatrixOriginalGame({ session, onExit }: GameComponentProps
     };
   }, []);
 
+  const handleTap = useCallback((event: NormalizedInputEvent) => {
+    tapHandlerRef.current?.(event);
+  }, []);
+
   return (
-    <div className={styles.fullscreen}>
+    <InputSurface
+      className={styles.fullscreen}
+      options={{ enableTaps: true, enableSwipes: false }}
+      onTap={handleTap}
+    >
       <div ref={hostRef} className={styles.gameHost} />
-    </div>
+    </InputSurface>
   );
 }

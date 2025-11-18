@@ -32,6 +32,11 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
   margin: 0;
   min-height: var(--tg-viewport-height, 100vh);
@@ -39,6 +44,7 @@ body {
   background: var(--color-app-background);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
+  touch-action: manipulation;
 }
 
 img {

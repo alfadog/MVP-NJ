@@ -1,3 +1,5 @@
+import type { NormalizedInputEvent } from '@/core/input'
+
 import { checkPick, getPatternDuration, levelDown, nextLevel, startLevel, startSession } from './game'
 import { getBestLevel, setBestLevel, getResultHistory, recordResult } from './storage'
 import type { ResultEntry } from './storage'
@@ -6,6 +8,7 @@ import {
   createGridInputTelemetry,
   getCellIndex as readCellIndex,
   markCellRemembered,
+  resolveCellFromEvent,
   resolveGridInputFeature,
   resetCellState,
   setupGridInputController,
@@ -65,11 +68,20 @@ export function initMemoryMatrixOriginalUI(options: UIOptions): () => void {
   const doc = root.ownerDocument ?? document;
   const gridInputFeature = resolveGridInputFeature(doc);
   const gridTelemetry = createGridInputTelemetry({ enabled: gridInputFeature.telemetryEnabled });
-  const useModernGridInput = gridInputFeature.mode === 'modern';
+  const hasExternalInput = typeof options.bindInputHandlers === 'function';
+  const shouldAttachGridController = !hasExternalInput && gridInputFeature.mode === 'modern';
 
   let gridController: GridInputController | null = null;
+  let externalInputCleanup: (() => void) | null = null;
   let mode: Mode = 'home';
-  if (useModernGridInput) {
+  if (options.bindInputHandlers) {
+    const cleanup = options.bindInputHandlers({
+      onTap: (event) => {
+        handleExternalTap(event);
+      },
+    });
+    externalInputCleanup = typeof cleanup === 'function' ? cleanup : null;
+  } else if (shouldAttachGridController) {
     gridController = setupGridInputController({
       grid: playEl.grid,
       isInteractive: () => mode === 'input',
@@ -153,7 +165,8 @@ export function initMemoryMatrixOriginalUI(options: UIOptions): () => void {
     }
 
     const isKeyboard = event.detail === 0;
-    if (useModernGridInput && !isKeyboard) {
+    const shouldBlockPointerClicks = hasExternalInput || shouldAttachGridController;
+    if (shouldBlockPointerClicks && !isKeyboard) {
       event.preventDefault();
       return;
     }
@@ -176,6 +189,42 @@ export function initMemoryMatrixOriginalUI(options: UIOptions): () => void {
 
     gridTelemetry.keyboardCommit(outcome === 'wrong' ? 'wrong' : outcome === 'duplicate' ? 'duplicate' : 'accepted');
   });
+
+  function handleExternalTap(event: NormalizedInputEvent): void {
+    if (mode !== 'input') {
+      return;
+    }
+
+    const rawEvent = event.rawEvent;
+    if (!(rawEvent instanceof PointerEvent)) {
+      return;
+    }
+
+    const cell = resolveCellFromEvent(playEl.grid, rawEvent);
+    const pointerId = typeof rawEvent.pointerId === 'number' ? rawEvent.pointerId : 0;
+
+    if (!cell) {
+      gridTelemetry.pointerDrop(pointerId, 'leave');
+      return;
+    }
+
+    const index = readCellIndex(cell);
+    if (index === null) {
+      gridTelemetry.pointerDrop(pointerId, 'leave');
+      return;
+    }
+
+    gridTelemetry.pointerStart(pointerId, index, event.startedAt ?? performance.now());
+
+    const outcome = handleCellActivation(cell, index, 'pointer');
+
+    if (outcome === 'ignored') {
+      gridTelemetry.pointerDrop(pointerId, 'ignored');
+      return;
+    }
+
+    gridTelemetry.pointerCommit(pointerId, outcome === 'wrong' ? 'wrong' : outcome === 'duplicate' ? 'duplicate' : 'accepted');
+  }
 
   playEl.goButton.addEventListener('click', () => {
     triggerRevealStart('button');
@@ -1186,6 +1235,7 @@ export function initMemoryMatrixOriginalUI(options: UIOptions): () => void {
   return () => {
     clearAllTimers();
     gridController?.destroy();
+    externalInputCleanup?.();
     disarmRevealTap();
     host.removeAttribute('data-theme');
     root.innerHTML = '';
