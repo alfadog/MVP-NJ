@@ -42,9 +42,13 @@ export function GameClient({ slug }: GameClientProps) {
     );
   }
 
+  const isPlaying = mode === 'playing';
+
   return (
     <Page back={false}>
-      {mode === 'details' ? (
+      {isPlaying ? (
+        <GamePlaySurface game={game} onExit={() => setMode('details')} />
+      ) : (
         <GameDetailsLayout
           game={game}
           onBack={() => router.push('/games')}
@@ -52,8 +56,6 @@ export function GameClient({ slug }: GameClientProps) {
           onZenMode={() => console.log(`Zen Mode coming soon for ${game.title}`)}
           onHowToPlay={() => console.log(`How to play ${game.title}`)}
         />
-      ) : (
-        <GamePlaySurface game={game} onExit={() => setMode('details')} />
       )}
     </Page>
   );
@@ -63,11 +65,12 @@ function GamePlaySurface({ game, onExit }: { game: GameDefinition; onExit: () =>
   const { startedAt, startGame, finishGame } = useGameSession(game.id, game.skillType);
   const GameComponent = game.component ?? PatternPeekGame;
   const sessionApi: GameComponentProps['session'] = { startedAt, startGame, finishGame };
+  const isImmersive = game.slug === 'memory-matrix-original';
 
   return (
-    <div className={styles.playSurface}>
-      <div className={styles.playBody}>
-        <div className={styles.playArea}>
+    <div className={`${styles.playSurface} ${isImmersive ? styles.playSurfaceImmersive : ''}`}>
+      <div className={`${styles.playBody} ${isImmersive ? styles.playBodyImmersive : ''}`}>
+        <div className={`${styles.playArea} ${isImmersive ? styles.playAreaImmersive : ''}`}>
           {GameComponent ? (
             <GameComponent game={game} session={sessionApi} onExit={onExit} />
           ) : (
