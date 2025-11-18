@@ -1,6 +1,6 @@
 :root {
   --font-family-base: system-ui, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-  --color-app-background: #f6f3ef;
+  --color-app-background: #fdfdfe;
   --color-surface: #ffffff;
   --color-surface-muted: #f0ebe4;
   --color-text-primary: #101828;
@@ -26,6 +26,8 @@
   --type-tag-weight: 500;
   --line-height-tight: 1.3;
   --line-height-cozy: 1.45;
+  --app-header-height: 56px;
+  --app-header-offset: calc(var(--app-header-height) + env(safe-area-inset-top));
 }
 
 * {

@@ -9,6 +9,16 @@ import {
   miniApp,
 } from '@telegram-apps/sdk-react';
 
+type TelegramWindow = Window & {
+  Telegram?: {
+    WebApp?: {
+      setHeaderColor?: (color: string) => void;
+      setBackgroundColor?: (color: string) => void;
+      setBottomBarColor?: (color: string) => void;
+    };
+  };
+};
+
 /**
  * Keeps the Mini App shell in sync with Telegram's full-screen experience.
  * - Calls WebApp.ready() so the native placeholder disappears immediately.
@@ -17,10 +27,19 @@ import {
  */
 export function useTelegramShell() {
   useEffect(() => {
+    const surfaceColor = '#fdfdfe';
+
     // Inform Telegram that the UI is ready as soon as we mount on the client.
     miniApp.ready.ifAvailable?.();
-    miniApp.setHeaderColor.ifAvailable?.('secondary_bg_color');
-    miniApp.setBackgroundColor.ifAvailable?.('secondary_bg_color');
+    miniApp.setHeaderColor.ifAvailable?.(surfaceColor);
+    miniApp.setBackgroundColor.ifAvailable?.(surfaceColor);
+
+    if (typeof window !== 'undefined') {
+      const tg = (window as TelegramWindow).Telegram?.WebApp;
+      tg?.setHeaderColor?.(surfaceColor);
+      tg?.setBackgroundColor?.(surfaceColor);
+      tg?.setBottomBarColor?.(surfaceColor);
+    }
 
     // Request the maximum height and expose --tg-viewport-* CSS variables.
     expandViewport.ifAvailable?.();
@@ -49,7 +68,49 @@ export function useTelegramShell() {
     }
 
     // Prevent the sheet-style swipe from collapsing the Mini App back down.
-    disableVerticalSwipes.ifAvailable?.();
+    const canDisableSwipe = typeof disableVerticalSwipes.ifAvailable === 'function';
+    let removeEdgeSwipeGuards: (() => void) | undefined;
+
+    if (canDisableSwipe) {
+      disableVerticalSwipes.ifAvailable?.();
+    } else {
+      // Prevent accidental sheet-like collapses on clients that do not expose the
+      // official API yet by stopping downward swipes that originate from the top.
+      removeEdgeSwipeGuards = (() => {
+        let startY = 0;
+        let shouldBlock = false;
+
+        const onTouchStart = (event: TouchEvent) => {
+          if (event.touches.length !== 1) {
+            shouldBlock = false;
+            return;
+          }
+
+          startY = event.touches[0].clientY;
+          const scrollElement = document.scrollingElement;
+          shouldBlock = (scrollElement?.scrollTop ?? 0) <= 0;
+        };
+
+        const onTouchMove = (event: TouchEvent) => {
+          if (!shouldBlock || event.touches.length !== 1) {
+            return;
+          }
+
+          const deltaY = event.touches[0].clientY - startY;
+          if (deltaY > 8) {
+            event.preventDefault();
+          }
+        };
+
+        document.addEventListener('touchstart', onTouchStart, { passive: true });
+        document.addEventListener('touchmove', onTouchMove, { passive: false });
+
+        return () => {
+          document.removeEventListener('touchstart', onTouchStart);
+          document.removeEventListener('touchmove', onTouchMove);
+        };
+      })();
+    }
 
     return () => {
       if (cssVarsBound) {
@@ -57,7 +118,11 @@ export function useTelegramShell() {
       }
 
       // Re-enable the default gesture if the component ever unmounts (e.g. HMR).
-      enableVerticalSwipes.ifAvailable?.();
+      if (canDisableSwipe) {
+        enableVerticalSwipes.ifAvailable?.();
+      }
+
+      removeEdgeSwipeGuards?.();
     };
   }, []);
 }
