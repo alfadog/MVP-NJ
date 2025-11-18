@@ -1,0 +1,1 @@
+export { MemoryMatrixOriginalGame } from './MemoryMatrixOriginalGame';

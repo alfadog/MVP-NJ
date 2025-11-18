@@ -23,11 +23,30 @@ export function useTelegramShell() {
     miniApp.setBackgroundColor.ifAvailable?.('secondary_bg_color');
 
     // Request the maximum height and expose --tg-viewport-* CSS variables.
-    miniApp.expand.ifAvailable?.();
     expandViewport.ifAvailable?.();
-    const [cssVarsBound, stopBinding] = bindViewportCssVars.ifAvailable
-      ? bindViewportCssVars.ifAvailable()
-      : [false];
+
+    let cssVarsBound = false;
+    let stopBinding: (() => void) | undefined;
+
+    if (bindViewportCssVars.ifAvailable) {
+      try {
+        const [bound, stop] = bindViewportCssVars.ifAvailable();
+        cssVarsBound = bound;
+        stopBinding = stop;
+      } catch (error) {
+        const isAlreadyBoundError =
+          error instanceof Error && error.message.toLowerCase().includes('css variables are already bound');
+
+        if (!isAlreadyBoundError) {
+          throw error;
+        }
+
+        if (process.env.NODE_ENV !== 'production') {
+          // eslint-disable-next-line no-console -- Useful during development to surface Telegram SDK binding issues.
+          console.warn('Skipping viewport CSS variable binding because it is already active.');
+        }
+      }
+    }
 
     // Prevent the sheet-style swipe from collapsing the Mini App back down.
     disableVerticalSwipes.ifAvailable?.();
