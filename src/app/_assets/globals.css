@@ -37,14 +37,34 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+html {
+  /* Prevent overscroll bounce on iOS */
+  overscroll-behavior: none;
+  /* Ensure fullscreen coverage on iOS */
+  height: 100%;
+  width: 100%;
+}
+
 body {
   margin: 0;
   min-height: var(--tg-viewport-height, 100vh);
+  height: 100%;
   font-family: var(--font-family-base);
   background: var(--color-app-background);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   touch-action: manipulation;
+  /* Prevent overscroll bounce on iOS - prevents pull-to-refresh and elastic scrolling */
+  overscroll-behavior: none;
+  overscroll-behavior-y: none;
+  /* Smooth scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent elastic bounce effect on iOS Safari */
+  position: relative;
+  width: 100%;
+  /* Allow content to scroll but prevent overscroll bounce */
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 img {
