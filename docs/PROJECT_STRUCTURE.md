@@ -1,153 +1,195 @@
-# Project structure & UI guidelines
+# Project structure & routing overview
 
-This document describes how the cognitive-training platform is organized and how
-future features must be implemented. It is the single source of truth for
-folder usage, routing conventions, and the UI system.
+This document describes how this repository is currently organized and how new
+code should roughly fit into the structure. It is intentionally **not**
+overly strict: this project is a sandbox for experiments, so the structure is
+allowed to evolve as long as it stays understandable.
 
-## Technology overview
+If you plan large structural changes, update this document afterwards.
 
-- **Framework**: Next.js (App Router) with TypeScript in strict mode.
-- **UI library**: [`@telegram-apps/telegram-ui`](https://github.com/telegram-mini-apps-dev/TelegramUI).
-  No other design system (Tailwind, Material UI, Chakra, etc.) is allowed.
-- **Design reference**: [Telegram Mini Apps UI Kit on Figma](https://www.figma.com/community/file/1348989725141777736/telegram-mini-apps-ui-kit).
-  Spacing, typography scales, button states, and list layouts must match the kit.
-- **Formatting & linting**: `pnpm lint` (ESLint) and `pnpm format` (Prettier).
+---
 
-## Directory layout
+## Technology snapshot
 
-```
-src/
-├── app/                     # Next.js routes, layouts, and API handlers
-│   ├── layout.tsx           # Root layout wires providers and TelegramUI AppRoot
-│   ├── page.tsx             # Landing page that previews TelegramUI components
-│   ├── init-data/           # Template diagnostic routes (keep for reference)
-│   ├── launch-params/
-│   ├── theme-params/
-│   ├── ton-connect/
-│   ├── games/               # (future) games catalog entry point
-│   │   └── [slug]/          # (future) dynamic game loader
-│   ├── profile/             # (future) cognitive skills dashboard
-│   └── leaderboards/        # (future) rankings surface
-├── components/              # Reusable React components built with TelegramUI only
-│   ├── Root/                # AppRoot, TonConnect, and global error boundary
-│   ├── Page.tsx             # Handles Telegram back button for every screen
-│   ├── Link/, LocaleSwitcher/, etc.
-├── core/                    # Telegram Mini App initialization & i18n providers
-│   ├── init.ts              # Mounts SDK utilities and binds theme/viewport CSS vars
-│   └── i18n/                # Internationalization setup + provider used in layout
-├── hooks/                   # Shared React hooks (e.g., `useDidMount`)
-├── css/                     # Utility helpers for composing class names
-├── games/                   # (future) source of individual game logic modules
-│   ├── <gameName>/          # Each game encapsulates hooks, components, and assets
-│   └── config.ts            # Registry that maps slugs to metadata and loader fns
-├── lib/                     # Shared utilities (analytics, Prisma client, helpers)
-│   └── prisma.ts            # Singleton Prisma client used by API routes/server actions
-├── shared/                  # (future) constants, types, and models used across features
-├── prisma/                  # Prisma schema + generated client cache
-│   └── schema.prisma        # Source of truth for DB models/migrations
-├── instrumentation-client.ts# tma.js instrumentation entry point
-└── mockEnv.ts               # Telegram env mocks for local development
-```
+- **Framework**: Next.js App Router (currently Next 15).
+- **Language**: TypeScript.
+- **UI**: `@telegram-apps/telegram-ui` is used in most components today, but it
+  is not the only allowed option. It can be replaced/augmented if there are
+  clear benefits.
+- **Telegram**: `@telegram-apps/sdk-react` for Mini Apps integration.
+- **i18n**: `next-intl`.
+- **Data**: Prisma as ORM (see `prisma/schema.prisma`).
 
-## Routing roadmap
+None of these are set in stone — they describe the **current reality**, not an
+untouchable spec.
 
-- `/games` – interactive catalog for all training modules.
-- `/games/[slug]` – runtime shell that loads a specific game from `src/games` via
-  the registry in `src/games/config.ts`.
-- `/profile` – summary of completed exercises, streaks, and skill levels.
-- `/leaderboards` – upcoming ranking view that will share leaderboard widgets across games.
-- `/app/api/*` – server actions / API routes powering storage, leaderboards, or personalization.
+---
 
-Each new route lives under `src/app/<route>` and must render TelegramUI sections,
-cards, and lists instead of custom DOM structures.
+## Top-level layout
 
-## Telegram-specific providers & hooks
+At the root of the repository:
 
-- `src/components/Root/Root.tsx` renders `<AppRoot>` from TelegramUI with the
-  current theme (`miniApp.isDark`) and platform adaptivity derived from launch
-  parameters. This file is also where Ton Connect is configured and where we
-  wrap the entire tree in an error boundary.
-- `src/core/init.ts` mounts SDK integrations (back button, viewport, theme
-  bindings) and must be updated whenever Telegram releases new capabilities.
-- Hooks such as `useDidMount` (in `src/hooks`) gate rendering until Telegram SDK
-  hydration is complete, ensuring smooth behavior inside the Mini App runtime.
+- `src/` — application code
+- `prisma/` — Prisma schema and migrations
+- `public/` — static assets (icons, images, etc.)
+- `docs/` — documentation (this file, AI rules, additional notes)
+- `memory_matrix/` — legacy standalone game implementation (kept for reference)
+- `package.json`, `pnpm-lock.yaml` — dependencies and scripts
+- `next.config.mjs` — Next.js configuration
+- `tsconfig.json` — TypeScript configuration
+- `.eslintrc.*`, `.prettierrc` / `prettier.config.*` — linting/formatting
 
-## UI & design rules
+The `memory_matrix/` folder may contain an older, self-contained implementation
+of the Memory Matrix game (e.g. Vite-based). It can be reused or migrated into
+the main app, or removed once it is no longer needed.
 
-1. **Always use TelegramUI components**: lists, cells, buttons, cards, modals,
-   chips, etc. Direct HTML should only wrap TelegramUI primitives.
-2. **Spacing & typography**: follow the values documented in the Figma UI Kit.
-   Default TelegramUI paddings already match, but any custom spacing must stick
-   to the 4px/8px rhythm outlined in the kit.
-3. **Light & dark modes**: do not hardcode colors. Read theme values from
-   `miniApp` signals and rely on the CSS variables that `bindThemeParamsCssVars`
-   exposes.
-4. **Layouts & adaptivity**: App screens should stay within Telegram's safe area.
-   Use `List`, `Section`, `Card`, and `Spacing` components to respect built-in
-   paddings on both mobile and desktop Telegram clients.
+---
 
-## Adding new UI components
+## `src/` structure
 
-1. Build the component under `src/components/<ComponentName>/` and export a
-   React component that composes TelegramUI primitives.
-2. Reference the Figma UI Kit while designing spacing, typography, and states.
-3. Keep logic (hooks, helpers) next to the component or inside `src/lib`/`src/shared`
-   for cross-cutting concerns.
-4. Write story-like usage notes inside the component directory to capture the
-   intended props and variations.
+### `src/app/` — routes (App Router)
 
-## Game modules & registry
+This directory defines all routes for the Next.js application.
 
-- Every game lives in `src/games/<gameName>/` and can expose hooks, reducers,
-  and TelegramUI-based UI fragments.
-- `src/games/config.ts` will export a typed registry, e.g.
+Typical structure (may evolve):
 
-  ```ts
-  export const games = [
-    {
-      slug: 'memory-match',
-      title: 'Memory Match',
-      component: () => import('./memory-match').then((m) => m.MemoryMatchGame),
-      difficulty: ['focus', 'memory'],
-    },
-  ];
-  ```
+- `src/app/layout.tsx` — root layout (wrapping providers, global styles, etc.)
+- `src/app/page.tsx` — home page / landing
+- `src/app/(routes)/` — grouped routes (optional pattern)
+- `src/app/games/` — entry point for game-related routes
+  - `src/app/games/page.tsx` — games list / selector
+  - `src/app/games/[slug]/page.tsx` — dynamic route for a specific game
+- `src/app/profile/page.tsx` — player profile / stats (optional / future)
+- `src/app/leaderboards/page.tsx` — leaderboards (optional / future)
+- `src/app/api/*` — API routes / server actions
 
-- `/games/[slug]` consumes the registry to dynamically render the requested game
-  and ensures telemetry/analytics hooks are attached consistently.
+Guidelines (not hard rules):
 
-- `src/games/useGameSession.ts` exposes a lightweight client-only hook for
-  starting/finishing a session. It now posts results to `/api/game-sessions`
-  while still logging locally, so future games get persistence for free.
+- New screens should live under `src/app/<route>/page.tsx`.
+- Game-specific routes should be placed under `src/app/games/…`.
+- When possible, keep route files thin and delegate UI/logic to components in
+  `src/components` or `src/games`.
 
-- Prisma is the ORM that backs our API routes. Its schema lives in
-  `prisma/schema.prisma` and currently targets SQLite for local development.
-- Create a `.env` file (based on `.env.example`) with `DATABASE_URL="file:./dev.db"`
-  or point it at PostgreSQL when deploying. Prisma reads this variable for all
-  migrations and client connections.
-- The reusable Prisma client lives in `src/lib/prisma.ts` so every server action
-  or route imports the same singleton. This prevents exhausting connection pools
-  during hot reloads.
-- Use `pnpm prisma:migrate` to evolve the schema, `pnpm prisma:generate` to
-  refresh the client after edits, and `pnpm prisma:studio` to inspect data.
-- `User` (keyed by Telegram ID) stores the display name/username of the current
-  tester. `GameSession` captures a finished run: game id, skill type, score,
-  optional level/duration/meta, and timestamps.
-- API routes under `src/app/api/game-sessions`:
-  - `POST /api/game-sessions` validates payloads, upserts the user, and writes a
-    `GameSession` row.
-  - `GET /api/game-sessions/recent?userId=...` fetches the last five sessions so
-    UI surfaces (like `/profile`) can show “Recent activity”.
+---
 
-## Development workflow
+### `src/components/` — shared UI
 
-| Task | Command |
-| ---- | ------- |
-| Install deps | `pnpm install` |
-| Run dev server | `pnpm dev` |
-| Lint | `pnpm lint` |
-| Format | `pnpm format` |
+Reusable components used across multiple routes.
 
-> **Tip**: run `pnpm dev:https` when testing inside real Telegram clients that
-> require HTTPS origins.
+Examples:
 
+- `src/components/Root/` — root application shell / layout
+- `src/components/Page.tsx` — common page wrapper (e.g. back button handling)
+- `src/components/...` — shared buttons, lists, cards, etc.
+
+Current implementation is heavily based on **TelegramUI**, but:
+
+- you may refactor components,
+- introduce other UI helpers,
+- split components into smaller pieces,
+
+as long as the resulting structure remains discoverable and consistent.
+
+---
+
+### `src/games/` — game-specific code
+
+This is the place for code that belongs to individual games or the games
+catalogue.
+
+A possible layout (you can adjust, but keep it coherent):
+
+- `src/games/memory-matrix/`
+  - game logic
+  - React components for the game screen(s)
+  - types and helpers specific to this game
+- `src/games/index.ts` or `src/games/config.ts`
+  - registry of available games (slug, title, description, assets)
+
+Routes under `src/app/games` should import and use these modules rather than
+embedding all logic directly in route files.
+
+---
+
+### `src/core/` — core logic & providers
+
+Core, cross-cutting pieces that are not pure UI:
+
+- `src/core/telegram/` — initialization of `@telegram-apps/sdk-react`,
+  theme/viewport bindings, back button handling, etc.
+- `src/core/i18n/` — `next-intl` setup and providers.
+- `src/core/config.ts` — shared configuration (API URLs, feature flags, etc.)
+- `src/core/types.ts` — shared types (if needed).
+
+Exact filenames and subfolders can be reorganized. The main idea is to have a
+clear place for:
+
+- Telegram-specific behaviour,
+- internationalization,
+- high-level app configuration.
+
+---
+
+### `src/lib/` — utilities & low-level helpers
+
+Useful helpers and singletons such as:
+
+- `src/lib/prisma.ts` — Prisma client instance.
+- `src/lib/logger.ts` — logging helpers.
+- `src/lib/validation.ts` — shared validation logic.
+
+Keep `src/lib` focused on generic functionality that could, in theory, be
+reused in other projects.
+
+---
+
+## `prisma/` — database schema
+
+- `prisma/schema.prisma` — single source of truth for DB schema.
+- `prisma/migrations/` — generated by Prisma CLI.
+
+Data model is considered **work-in-progress**. You can:
+
+- add tables for games, results, users, tournaments, etc.,
+- refactor the schema,
+
+but you should keep migrations consistent and update any server-side code or
+API routes that rely on the schema.
+
+---
+
+## Adding new features and games
+
+When implementing new features:
+
+1. Look at existing patterns in `src/app`, `src/components`, `src/games`,
+   `src/core`.
+2. Prefer **extending** existing patterns over inventing completely different
+   folder structures.
+3. If you introduce a new pattern (e.g. a different way to register games),
+   briefly document it here.
+
+For a new game, a reasonable approach is:
+
+- add game code under `src/games/<game-slug>/`,
+- add metadata (title, description) to a shared registry,
+- add a route under `src/app/games/<game-slug>/page.tsx`,
+- wire it into the games list on `src/app/games/page.tsx`.
+
+---
+
+## Refactoring & evolution
+
+Because this repository is a learning playground:
+
+- It is **allowed** to:
+  - reorganize folders,
+  - split/merge modules,
+  - change how routing or state is handled,
+  - swap dependencies.
+- After large refactors, please:
+  - update this document to match the new reality,
+  - keep the structure understandable for the next person (or AI) who opens it.
+
+If you are an AI assistant and plan a major restructure, summarize your plan
+before applying it and ensure the project still builds afterwards.
