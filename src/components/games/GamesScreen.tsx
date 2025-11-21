@@ -6,16 +6,20 @@ import {
   todaysGameIds,
 } from '@/games/config';
 import type { GameDefinition, GameSkillType } from '@/games/config';
+import { getAvailableGames } from '@/games/utils';
 
 import styles from './GamesScreen.module.css';
 import { GameCard } from './GameCard';
 
-const gamesById = games.reduce<Record<string, GameDefinition>>((acc, game) => {
+// Filter to only show games with component implementations
+const availableGames = getAvailableGames(games);
+
+const gamesById = availableGames.reduce<Record<string, GameDefinition>>((acc, game) => {
   acc[game.id] = game;
   return acc;
 }, {});
 
-const gamesBySkill = games.reduce<Record<GameSkillType, GameDefinition[]>>(
+const gamesBySkill = availableGames.reduce<Record<GameSkillType, GameDefinition[]>>(
   (acc, game) => {
     if (!acc[game.skillType]) {
       acc[game.skillType] = [];
@@ -29,6 +33,7 @@ const gamesBySkill = games.reduce<Record<GameSkillType, GameDefinition[]>>(
 );
 
 export function GamesScreen() {
+  // Only show today's games that are available (have components)
   const todaysGames = todaysGameIds
     .map((id) => gamesById[id])
     .filter((game): game is GameDefinition => Boolean(game));
@@ -42,7 +47,7 @@ export function GamesScreen() {
         </div>
         <div className={styles.resources}>
           <ResourceChip label="Flame" value="0" icon="🔥" />
-          <ResourceChip label="Energy" value="1167" icon="⚡️" />
+          <ResourceChip label="Energy" value="1555" icon="⚡️" />
         </div>
       </div>
 

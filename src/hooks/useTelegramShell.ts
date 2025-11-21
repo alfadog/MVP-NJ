@@ -8,61 +8,73 @@ import {
   expandViewport,
   miniApp,
   useLaunchParams,
+  useSignal,
 } from '@telegram-apps/sdk-react';
+
+import { telegramThemeConfig } from '@/core/telegram-theme-config';
 
 /**
  * Keeps the Mini App shell in sync with Telegram's full-screen experience.
  * - Calls WebApp.ready() so the native placeholder disappears immediately.
  * - Expands to the maximum allowed height and pins the viewport CSS variables.
  * - Disables the swipe-to-collapse gesture to avoid accidental closes.
+ * - Sets theme colors from central config.
  * - Ensures fullscreen mode on iOS with proper viewport configuration.
  */
 export function useTelegramShell() {
   const launchParams = useLaunchParams();
+  const isDark = useSignal(miniApp.isDark);
   const isIOS = ['macos', 'ios'].includes(launchParams.tgWebAppPlatform);
 
   useEffect(() => {
-    // Access native Telegram WebApp API for fullscreen and swipe behavior
+    // Get theme colors from central config
+    const theme = isDark ? telegramThemeConfig.dark : telegramThemeConfig.light;
+
+    // Step 1: Initialize Telegram WebApp - ready() must be called first
+    miniApp.ready.ifAvailable?.();
+
+    // Step 2: Expand viewport to maximum height
+    expandViewport.ifAvailable?.();
+
+    // Step 3: Set header and background colors from config
+    // Using actual color values, not theme parameter names
+    miniApp.setHeaderColor.ifAvailable?.(theme.header_bg_color);
+    miniApp.setBackgroundColor.ifAvailable?.(theme.bg_color);
+
+    // Step 4: Access native Telegram WebApp API for additional configuration
     // According to https://docs.telegram-mini-apps.com/
-    // Methods: web_app_request_fullscreen, web_app_setup_swipe_behavior
     if (typeof window !== 'undefined') {
       const tgWebApp = (window as any).Telegram?.WebApp;
       if (tgWebApp) {
-        // Inform Telegram that the UI is ready - must be called first
+        // Ensure ready() is called on native API too
         tgWebApp.ready?.();
 
-        // 1. Expand to maximum height first
+        // Expand to maximum height
         tgWebApp.expand?.();
 
-        // 2. Request fullscreen mode - removes Telegram header and footer
+        // Request fullscreen mode - removes Telegram header and footer
         // https://docs.telegram-mini-apps.com/platform/viewport
-        // Method: web_app_request_fullscreen
         if (tgWebApp.requestFullscreen) {
           tgWebApp.requestFullscreen();
         }
 
-        // 3. Setup swipe behavior to disable vertical swipes inside the app
+        // Setup swipe behavior to disable vertical swipes
         // https://docs.telegram-mini-apps.com/platform/swipe-behavior
-        // Method: web_app_setup_swipe_behavior with { allow_vertical_swipe: false }
         if (tgWebApp.setupSwipeBehavior) {
-          // Disable vertical swipes to prevent accidental collapse
           tgWebApp.setupSwipeBehavior({
             allow_vertical_swipe: false,
           });
         }
+
+        // Set theme colors on native API
+        if (tgWebApp.setHeaderColor) {
+          tgWebApp.setHeaderColor(theme.header_bg_color);
+        }
+        if (tgWebApp.setBackgroundColor) {
+          tgWebApp.setBackgroundColor(theme.bg_color);
+        }
       }
     }
-
-    // Also use SDK methods as additional configuration
-    miniApp.ready.ifAvailable?.();
-    
-    // Set header and background colors to match theme
-    miniApp.setHeaderColor.ifAvailable?.('secondary_bg_color');
-    miniApp.setBackgroundColor.ifAvailable?.('secondary_bg_color');
-
-    // Request the maximum height and expose --tg-viewport-* CSS variables.
-    // This is critical for fullscreen mode on iOS.
-    expandViewport.ifAvailable?.();
 
     let cssVarsBound = false;
     let stopBinding: (() => void) | undefined;
@@ -99,5 +111,5 @@ export function useTelegramShell() {
       // Re-enable the default gesture if the component ever unmounts (e.g. HMR).
       enableVerticalSwipes.ifAvailable?.();
     };
-  }, [isIOS]);
+  }, [isDark, isIOS]);
 }
