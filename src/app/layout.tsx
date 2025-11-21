@@ -23,10 +23,6 @@ export const metadata: Metadata = {
   other: {
     'app-version': appVersion,
   },
-  // Theme color for Telegram header and browser
-  themeColor: themeColor,
-  // Color scheme for proper rendering
-  colorScheme: 'light dark',
 };
 
 export const viewport: Viewport = {
@@ -35,6 +31,10 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover', // Fullscreen on iOS with safe-area support
+  // Theme color for Telegram header and browser
+  themeColor: themeColor,
+  // Color scheme for proper rendering
+  colorScheme: 'light dark',
 };
 
 export default async function RootLayout({ children }: PropsWithChildren) {
