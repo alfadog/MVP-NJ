@@ -1,167 +1,147 @@
-# Telegram Mini Apps Next.js Template
+# MVP-NJ — Telegram Mini Apps Playground
 
-This template demonstrates how developers can implement a web application on the
-Telegram Mini Apps platform using the following technologies and libraries. It
-is now configured as the base for a cognitive-training platform where
-**TelegramUI** is the only allowed UI toolkit and the [Telegram Mini Apps Figma
-UI Kit](https://www.figma.com/community/file/1348989725141777736/telegram-mini-apps-ui-kit)
-defines every spacing, typography scale, and component state.
+This repository is an **experimental playground** for building a small cognitive-training platform on top of **Telegram Mini Apps**.
 
-- [Next.js](https://nextjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [TON Connect](https://docs.ton.org/develop/dapps/ton-connect/overview)
-- [@telegram-apps SDK](https://docs.telegram-mini-apps.com/packages/telegram-apps-sdk/2-x)
-- [Telegram UI](https://github.com/Telegram-Mini-Apps/TelegramUI) (exclusive UI framework)
+The goal is **not** to keep a perfect, frozen template, but to:
 
-> The template was created using [pnpm](https://pnpm.io/). Therefore, it is
-> required to use it for this project as well. Using other package managers, you
-> will receive a corresponding error.
+* experiment with different architectures,
+* test what AI assistants (Cursor, GitHub Copilot / Codex) can do,
+* iterate on simple games (e.g. Memory Matrix),
+* eventually deploy them as a Telegram Mini App under a dedicated subdomain.
 
-## Install Dependencies
+Most of the existing code was originally generated/modified by AI and may contain architectural or stylistic inconsistencies. Treat this project as a learning environment.
 
-If you have just cloned this template, you should install the project
-dependencies using the command:
+---
 
-```Bash
+## Current stack (may evolve)
+
+At the moment, the project uses:
+
+* **Next.js 15** (App Router, `src/app`)
+* **React 18**
+* **TypeScript**
+* **pnpm**
+* `@telegram-apps/sdk-react`
+* `@telegram-apps/telegram-ui`
+* `next-intl`
+* **Prisma** (`@prisma/client` + migrations)
+
+These choices are **not strict constraints**. AI assistants are allowed to:
+
+* propose better architecture,
+* replace or remove dependencies,
+* restructure pages/components,
+* reorganize game logic,
+
+as long as the project stays **buildable and runnable** and the assistant explains the trade-offs.
+
+---
+
+## High-level concept
+
+The platform should eventually support:
+
+* a **game list/dashboard**,
+* individual **game pages** (starting with Memory Matrix),
+* optional **profile**, **leaderboards**,
+* proper Telegram Mini App integration:
+
+  * `initData`,
+  * theme adaptation,
+  * viewport handling,
+  * back button,
+  * smooth WebView behaviour.
+
+Everything else is flexible and can be redesigned.
+
+---
+
+## Local development
+
+Prerequisites:
+
+* Node.js **20+**
+* pnpm installed globally — `npm install -g pnpm`
+
+Install dependencies:
+
+```
 pnpm install
 ```
 
-## Database & Prisma
+Start dev server (HTTP):
 
-- Copy `.env.example` to `.env` and set `DATABASE_URL`. The default SQLite value
-  (`file:./dev.db`) is enough for local development and can be swapped for a
-  PostgreSQL connection string later.
-- Use the provided scripts to manage the schema:
-  - `pnpm prisma:migrate` – run local migrations (`prisma migrate dev`).
-  - `pnpm prisma:generate` – regenerate the Prisma client after schema changes.
-  - `pnpm prisma:studio` – open Prisma Studio to inspect/edit local data.
-- Import the shared Prisma client from `src/lib/prisma.ts` in any server action
-  or API route to avoid instantiating multiple clients during dev hot reloads.
-
-## Scripts
-
-This project contains the following scripts:
-
-- `dev`. Runs the application in development mode.
-- `dev:https`. Runs the application in development mode using self-signed SSL
-  certificate.
-- `build`. Builds the application for production.
-- `start`. Starts the Next.js server in production mode.
-- `lint`. Runs [eslint](https://eslint.org/) to ensure the code quality meets
-  the required
-  standards.
-- `format`. Runs [Prettier](https://prettier.io/) with the shared configuration
-  found in `prettier.config.js`.
-
-To run a script, use the `pnpm run` command:
-
-```Bash
-pnpm run {script}
-# Example: pnpm run build
+```
+pnpm dev
 ```
 
-## Create Bot and Mini App
+Start dev server with local HTTPS (for TMA testing):
 
-Before you start, make sure you have already created a Telegram Bot. Here is
-a [comprehensive guide](https://docs.telegram-mini-apps.com/platform/creating-new-app)
-on how to do it.
-
-## Run
-
-Although Mini Apps are designed to be opened
-within [Telegram applications](https://docs.telegram-mini-apps.com/platform/about#supported-applications),
-you can still develop and test them outside of Telegram during the development
-process.
-
-To run the application in the development mode, use the `dev` script:
-
-```bash
-pnpm run dev
+```
+pnpm dev:https
 ```
 
-After this, you will see a similar message in your terminal:
+Build for production:
 
-```bash
-▲ Next.js 14.2.3
-- Local:        http://localhost:3000
-
-✓ Starting...
-✓ Ready in 2.9s
+```
+pnpm build
 ```
 
-To view the application, you need to open the `Local`
-link (`http://localhost:3000` in this example) in your browser.
+Run production build:
 
-It is important to note that some libraries in this template, such as
-`@telegram-apps/sdk`, are not intended for use outside of Telegram.
-
-Nevertheless, they appear to function properly. This is because the
-`src/hooks/useTelegramMock.ts` file, which is imported in the application's
-`Root` component, employs the `mockTelegramEnv` function to simulate the
-Telegram environment. This trick convinces the application that it is
-running in a Telegram-based environment. Therefore, be cautious not to use this
-function in production mode unless you fully understand its implications.
-
-### Run Inside Telegram
-
-Although it is possible to run the application outside of Telegram, it is
-recommended to develop it within Telegram for the most accurate representation
-of its real-world functionality.
-
-To run the application inside Telegram, [@BotFather](https://t.me/botfather)
-requires an HTTPS link.
-
-This template already provides a solution.
-
-To retrieve a link with the HTTPS protocol, consider using the `dev:https`
-script:
-
-```bash
-$ pnpm run dev:https
-
-▲ Next.js 14.2.3
-- Local:        https://localhost:3000
-
-✓ Starting...
-✓ Ready in 2.4s
+```
+pnpm start
 ```
 
-Visiting the `Local` link (`https://localhost:3000` in this example) in your
-browser, you will see the following warning:
+Next.js dev server runs on port `3000` by default.
 
-![SSL Warning](assets/ssl-warning.png)
+---
 
-This browser warning is normal and can be safely ignored as long as the site is
-secure. Click the `Proceed to localhost (unsafe)` button to continue and view
-the application.
+## Prisma & database
 
-Once the application is displayed correctly, submit the
-link `https://127.0.0.1:3000` (`https://localhost:3000` is considered as invalid
-by BotFather) as the Mini App link to [@BotFather](https://t.me/botfather).
-Then, navigate to [https://web.telegram.org/k/](https://web.telegram.org/k/),
-find your bot, and launch the Telegram Mini App. This approach provides the full
-development experience.
+Prisma is used as the ORM.
+The default setup uses **SQLite** for development (`.env.example`, `prisma/schema.prisma`).
 
-## Deploy
+Useful commands:
 
-The easiest way to deploy your Next.js app is to use
-the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
-from the creators of Next.js.
+```
+pnpm prisma:migrate
+pnpm prisma:generate
+pnpm prisma:studio
+```
 
-Check out
-the [Next.js deployment documentation](https://nextjs.org/docs/deployment) for
-more details.
+Switching to MySQL/PostgreSQL is allowed later — update `DATABASE_URL` and regenerate the client.
 
-## Internal project documentation
+---
 
-All contributors should read `docs/PROJECT_STRUCTURE.md` before making changes.
-It documents the agreed routing plan (`/games`, `/games/[slug]`, `/profile`,
-`/leaderboards`, and `/app/api/*`), where Telegram-specific providers live, and
-how new games must be added under `src/games/<gameName>/` with entries in
-`src/games/config.ts`.
+## Routing & structure
 
-## Useful Links
+The project uses the **App Router** (`src/app`).
 
-- [Platform documentation](https://docs.telegram-mini-apps.com/)
-- [@telegram-apps/sdk-react documentation](https://docs.telegram-mini-apps.com/packages/telegram-apps-sdk-react)
-- [Telegram developers community chat](https://t.me/devs)
+See `docs/PROJECT_STRUCTURE.md` for a complete explanation of:
+
+* folder structure,
+* game structure,
+* component layout,
+* providers,
+* conventions.
+
+---
+
+## AI assistant usage
+
+This project is intentionally used to test AI tools (Cursor, Codex, etc.).
+
+AI assistants should:
+
+* read:
+
+  * `README.md`,
+  * `docs/PROJECT_STRUCTURE.md`,
+  * `docs/AI_RULES.md`,
+* propose improvements where beneficial,
+* keep the project buildable (`pnpm lint`, `pnpm build`),
+* avoid assumptions about other servers/projects,
+* treat this repository as **isolated** (no relation to Magento or other codebases).
+
+Experiments, refactors and architectural suggestions are welcome — as long as they are explained and do not leave the repository in a broken state.
