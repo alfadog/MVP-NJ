@@ -28,7 +28,7 @@ model GameSession {
   startedAt  DateTime
   finishedAt DateTime
   createdAt  DateTime @default(now())
-  meta       Json?
+  meta       String?
 
   user       User     @relation(fields: [userId], references: [id])
 

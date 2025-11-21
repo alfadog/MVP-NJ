@@ -1,0 +1,240 @@
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:03 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:03 +00:00:           ^^^^^^^
+2025-11-21 20:21:03 +00:00: 
+2025-11-21 20:21:03 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:03 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:03 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:03 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:03 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:03 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:03 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:04 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:04 +00:00:           ^^^^^^^
+2025-11-21 20:21:04 +00:00: 
+2025-11-21 20:21:04 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:04 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:04 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:04 +00:00:           ^^^^^^^
+2025-11-21 20:21:04 +00:00: 
+2025-11-21 20:21:04 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:04 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:04 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:04 +00:00:           ^^^^^^^
+2025-11-21 20:21:04 +00:00: 
+2025-11-21 20:21:04 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:04 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:04 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:04 +00:00:           ^^^^^^^
+2025-11-21 20:21:04 +00:00: 
+2025-11-21 20:21:04 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:04 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00: /opt/gamenj/node_modules/.bin/next:2
+2025-11-21 20:21:04 +00:00: basedir=$(dirname "$(echo "$0" | sed -e 's,\\,/,g')")
+2025-11-21 20:21:04 +00:00:           ^^^^^^^
+2025-11-21 20:21:04 +00:00: 
+2025-11-21 20:21:04 +00:00: SyntaxError: missing ) after argument list
+2025-11-21 20:21:04 +00:00:     at wrapSafe (node:internal/modules/cjs/loader:1464:18)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1495:20)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
+2025-11-21 20:21:04 +00:00:     at Object.<anonymous> (/usr/lib/node_modules/pm2/lib/ProcessContainerFork.js:33:23)
+2025-11-21 20:21:04 +00:00:     at Module._compile (node:internal/modules/cjs/loader:1521:14)
+2025-11-21 20:21:04 +00:00:     at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+2025-11-21 20:21:04 +00:00:     at Module.load (node:internal/modules/cjs/loader:1266:32)
+2025-11-21 20:21:04 +00:00:     at Module._load (node:internal/modules/cjs/loader:1091:12)
